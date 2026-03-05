@@ -1,12 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-charcoal: #1f2421;
-  --color-brand-olive: #5f6f52;
-  --color-brand-sage: #a9b388;
-  --color-brand-ivory: #f6f3ec;
-  --color-brand-champagne: #e7ddd1;
-  --color-brand-gold: #b59a5f;
+  --color-brand-charcoal: #2c302e;
+  --color-brand-olive: #8f857d;
+  --color-brand-sage: #c9f2c2;
+  --color-brand-ivory: #fafdf7;
+  --color-brand-champagne: #8f857d;
+  --color-brand-gold: #409e05;
+  --color-brand-forest: #409e05;
+  --color-brand-tea: #c9f2c2;
+  --color-brand-porcelain: #fafdf7;
+  --color-brand-graphite: #2c302e;
 
   --font-display: "Garamond", "Times New Roman", serif;
   --font-body: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -25,8 +29,8 @@ body {
 body {
   font-family: var(--font-body);
   background:
-    radial-gradient(circle at 8% 6%, rgba(181, 154, 95, 0.1) 0, transparent 35%),
-    radial-gradient(circle at 92% 94%, rgba(95, 111, 82, 0.12) 0, transparent 30%),
+    radial-gradient(circle at 8% 6%, rgba(143, 133, 125, 0.14) 0, transparent 35%),
+    radial-gradient(circle at 92% 94%, rgba(64, 158, 5, 0.1) 0, transparent 34%),
     var(--color-brand-ivory);
 }
 
@@ -50,9 +54,9 @@ a {
 }
 
 .glass-card {
-  @apply rounded-2xl border border-brand-champagne/70 bg-white/70 shadow-sm backdrop-blur;
+  @apply rounded-2xl border border-brand-olive/35 bg-brand-ivory shadow-sm backdrop-blur;
 }
 
 .gold-divider {
-  @apply h-px w-28 bg-brand-gold;
+  @apply h-px w-28 bg-brand-forest;
 }

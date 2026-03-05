@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { packages, reviews, services } from "@/lib/content";
 
@@ -28,29 +29,47 @@ export default function Home() {
   return (
     <>
       <section className="section-shell pt-16">
-        <div className="glass-card overflow-hidden p-8 md:p-12">
-          <p className="text-xs uppercase tracking-[0.25em] text-brand-olive">Lagos Luxury Wellness</p>
-          <h1 className="mt-4 max-w-3xl text-5xl leading-tight text-brand-charcoal md:text-6xl">
-            A Premium Spa Experience Designed Around Calm, Care, and Results.
-          </h1>
-          <div className="gold-divider mt-6" />
-          <p className="mt-6 max-w-2xl text-base text-brand-charcoal/80">
-            Annebeala Spa blends therapeutic treatments with elegant ambience to help you recharge,
-            glow, and return to your routine restored.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href="/booking"
-              className="rounded-full bg-brand-charcoal px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-olive"
-            >
-              Book a Session
-            </Link>
-            <Link
-              href="/services"
-              className="rounded-full border border-brand-charcoal px-6 py-3 text-xs font-semibold uppercase tracking-wide"
-            >
-              Explore Services
-            </Link>
+        <div className="overflow-hidden rounded-3xl border border-brand-olive/35 bg-brand-charcoal p-8 md:p-12">
+          <div className="grid items-center gap-8 md:grid-cols-[1.4fr,0.6fr]">
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] text-brand-sage">Lagos Luxury Wellness</p>
+              <h1 className="mt-4 max-w-3xl text-5xl leading-tight text-brand-ivory md:text-6xl">
+                A Premium Spa Experience Designed Around Calm, Care, and Results.
+              </h1>
+              <div className="gold-divider mt-6" />
+              <p className="mt-6 max-w-2xl text-base text-brand-ivory/80">
+                Annebeala Spa blends therapeutic treatments with elegant ambience to help you
+                recharge, glow, and return to your routine restored.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/booking"
+                  className="rounded-full bg-brand-forest px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-sage hover:text-brand-charcoal"
+                >
+                  Book a Session
+                </Link>
+                <Link
+                  href="/services"
+                  className="rounded-full border border-brand-sage/70 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory"
+                >
+                  Explore Services
+                </Link>
+              </div>
+            </div>
+            <div className="mx-auto w-full max-w-56">
+              <div className="rounded-2xl border border-brand-sage/50 bg-brand-forest/90 p-3 shadow-lg">
+                <div className="relative h-60 overflow-hidden rounded-xl">
+                  <Image
+                    src="/PHOTO-2026-03-01-11-52-35.jpg"
+                    alt="Annebeala Spa brand logo"
+                    fill
+                    priority
+                    sizes="224px"
+                    className="object-cover object-top"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
