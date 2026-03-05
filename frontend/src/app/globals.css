@@ -60,3 +60,15 @@ a {
 .gold-divider {
   @apply h-px w-28 bg-brand-forest;
 }
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-brand-forest px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-sage hover:text-brand-charcoal;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-brand-olive/60 bg-brand-ivory px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-charcoal transition hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-brand-ivory;
+}
+
+.btn-secondary-dark {
+  @apply inline-flex items-center justify-center rounded-full border border-brand-sage/70 bg-brand-charcoal/30 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-sage hover:text-brand-charcoal;
+}
