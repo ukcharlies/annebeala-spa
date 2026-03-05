@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -16,16 +17,31 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-brand-champagne/80 bg-brand-ivory/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-brand-olive/30 bg-brand-ivory/95 backdrop-blur">
       <div className="section-shell flex items-center justify-between py-4">
-        <Link href="/" className="text-2xl font-semibold text-brand-charcoal">
-          Annebeala Spa
+        <Link href="/" className="flex items-center gap-3 text-brand-charcoal">
+          <div className="relative h-12 w-12 overflow-hidden rounded-full border border-brand-olive/40">
+            <Image
+              src="/PHOTO-2026-03-01-11-52-35.jpg"
+              alt="Annebeala Spa logo"
+              fill
+              priority
+              sizes="48px"
+              className="object-cover object-top"
+            />
+          </div>
+          <div className="leading-tight">
+            <p className="text-lg font-semibold">Annebeala Spa</p>
+            <p className="text-[0.62rem] uppercase tracking-[0.24em] text-brand-olive">
+              Beauty & Wellness
+            </p>
+          </div>
         </Link>
 
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="rounded-md border border-brand-champagne px-3 py-2 text-sm text-brand-charcoal md:hidden"
+          className="rounded-md border border-brand-olive/40 px-3 py-2 text-sm text-brand-charcoal md:hidden"
           aria-label="Toggle navigation menu"
         >
           Menu
@@ -39,7 +55,7 @@ export default function Header() {
           ))}
           <Link
             href="/booking"
-            className="rounded-full bg-brand-charcoal px-5 py-2 text-xs font-semibold text-brand-ivory transition hover:bg-brand-olive"
+            className="rounded-full bg-brand-forest px-5 py-2 text-xs font-semibold text-brand-ivory transition hover:bg-brand-charcoal"
           >
             Book Now
           </Link>
@@ -47,7 +63,7 @@ export default function Header() {
       </div>
 
       {open ? (
-        <nav className="section-shell border-t border-brand-champagne/70 pb-4 md:hidden">
+        <nav className="section-shell border-t border-brand-olive/40 pb-4 md:hidden">
           <ul className="flex flex-col gap-3 pt-4 text-sm uppercase tracking-wide text-brand-charcoal">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -60,7 +76,7 @@ export default function Header() {
               <Link
                 href="/booking"
                 onClick={() => setOpen(false)}
-                className="inline-flex rounded-full bg-brand-charcoal px-5 py-2 text-xs font-semibold text-brand-ivory"
+                className="inline-flex rounded-full bg-brand-forest px-5 py-2 text-xs font-semibold text-brand-ivory"
               >
                 Book Now
               </Link>
