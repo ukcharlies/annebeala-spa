@@ -133,7 +133,7 @@ export default function InquiryForm({ formType }: InquiryFormProps) {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="rounded-full bg-brand-charcoal px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-olive disabled:cursor-not-allowed disabled:opacity-60"
+        className="btn-primary disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending..." : "Send Inquiry"}
       </button>

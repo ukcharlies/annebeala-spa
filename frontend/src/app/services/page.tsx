@@ -26,7 +26,7 @@ export default function ServicesPage() {
 
       <Link
         href="/booking"
-        className="mt-10 inline-flex rounded-full bg-brand-charcoal px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-olive"
+        className="btn-primary mt-10"
       >
         Book a Service
       </Link>

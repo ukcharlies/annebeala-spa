@@ -26,7 +26,7 @@ export default function PackagesPage() {
 
       <Link
         href="/contact"
-        className="mt-10 inline-flex rounded-full border border-brand-charcoal px-6 py-3 text-xs font-semibold uppercase tracking-wide"
+        className="btn-secondary mt-10"
       >
         Request Custom Package
       </Link>

@@ -28,47 +28,88 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <section className="section-shell pt-16">
-        <div className="overflow-hidden rounded-3xl border border-brand-olive/35 bg-brand-charcoal p-8 md:p-12">
-          <div className="grid items-center gap-8 md:grid-cols-[1.4fr,0.6fr]">
-            <div>
+      <section className="section-shell pt-10 md:pt-14">
+        <div className="relative overflow-hidden rounded-[2rem] border border-brand-olive/30 bg-brand-charcoal">
+          <div className="absolute inset-0">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="h-full w-full object-cover opacity-30"
+            >
+              <source src="/meassaghe-video.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-charcoal via-brand-charcoal/75 to-brand-charcoal/45" />
+          </div>
+
+          <div className="relative grid gap-8 p-6 md:p-10 lg:grid-cols-[1.02fr,0.98fr] lg:gap-10 lg:p-12">
+            <div className="pt-2 md:pt-6">
               <p className="text-xs uppercase tracking-[0.25em] text-brand-sage">Lagos Luxury Wellness</p>
               <h1 className="mt-4 max-w-3xl text-5xl leading-tight text-brand-ivory md:text-6xl">
                 A Premium Spa Experience Designed Around Calm, Care, and Results.
               </h1>
               <div className="gold-divider mt-6" />
               <p className="mt-6 max-w-2xl text-base text-brand-ivory/80">
-                Annebeala Spa blends therapeutic treatments with elegant ambience to help you
-                recharge, glow, and return to your routine restored.
+                Step into curated rituals designed to restore your body, refresh your skin, and
+                elevate your confidence.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="/booking"
-                  className="rounded-full bg-brand-forest px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory transition hover:bg-brand-sage hover:text-brand-charcoal"
-                >
+                <Link href="/booking" className="btn-primary">
                   Book a Session
                 </Link>
-                <Link
-                  href="/services"
-                  className="rounded-full border border-brand-sage/70 px-6 py-3 text-xs font-semibold uppercase tracking-wide text-brand-ivory"
-                >
+                <Link href="/services" className="btn-secondary-dark">
                   Explore Services
                 </Link>
               </div>
             </div>
-            <div className="mx-auto w-full max-w-56">
-              <div className="rounded-2xl border border-brand-sage/50 bg-brand-forest/90 p-3 shadow-lg">
-                <div className="relative h-60 overflow-hidden rounded-xl">
-                  <Image
-                    src="/PHOTO-2026-03-01-11-52-35.jpg"
-                    alt="Annebeala Spa brand logo"
-                    fill
-                    priority
-                    sizes="224px"
-                    className="object-cover object-top"
-                  />
-                </div>
-              </div>
+
+            <div className="grid min-h-[28rem] grid-cols-12 grid-rows-12 gap-3 sm:min-h-[34rem]">
+              <article className="relative col-span-7 row-span-6 overflow-hidden rounded-2xl border border-brand-ivory/20 shadow-2xl">
+                <Image
+                  src="/marketting.png"
+                  alt="Annebeala Spa interior"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 60vw, 32vw"
+                  className="object-cover"
+                />
+              </article>
+
+              <article className="relative col-span-5 row-span-8 overflow-hidden rounded-2xl border border-brand-sage/35 shadow-2xl">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="h-full w-full object-cover"
+                >
+                  <source src="/meassaghe-video.mp4" type="video/mp4" />
+                </video>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-charcoal/55 to-transparent" />
+              </article>
+
+              <article className="relative col-span-8 row-span-6 -mt-2 overflow-hidden rounded-2xl border border-brand-sage/30 shadow-2xl">
+                <Image
+                  src="/laying%20down.jpg"
+                  alt="Spa client relaxing during treatment"
+                  fill
+                  sizes="(max-width: 1024px) 70vw, 38vw"
+                  className="object-cover"
+                />
+              </article>
+
+              <article className="relative col-span-4 row-span-4 overflow-hidden rounded-2xl border border-brand-ivory/20">
+                <Image
+                  src="/PHOTO-2026-03-01-11-52-35.jpg"
+                  alt="Annebeala Spa logo"
+                  fill
+                  sizes="(max-width: 1024px) 30vw, 15vw"
+                  className="object-cover"
+                />
+              </article>
             </div>
           </div>
         </div>
