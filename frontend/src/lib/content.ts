@@ -66,3 +66,39 @@ export const reviews = [
       "The attention to detail is excellent. This is now my monthly self-care ritual.",
   },
 ];
+
+export const branches = [
+  {
+    name: "Ikeja Branch",
+    area: "Ikeja GRA, Lagos",
+    address: "29C Remi Fani-Kayode Avenue, Ikeja GRA, Lagos",
+    phone: "+234 703 973 8924",
+    hours: "Mon - Sat: 9:30am - 7:00pm | Sun: 12:00pm - 7:00pm",
+  },
+  {
+    name: "VI Branch",
+    area: "Victoria Island, Lagos",
+    address: "Annebeala Spa, Victoria Island, Lagos",
+    phone: "+234 916 413 3000",
+    hours: "Mon - Sat: 9:30am - 7:00pm | Sun: 12:00pm - 7:00pm",
+  },
+];
+
+export const brandPillars = [
+  {
+    title: "Prime Locations",
+    description: "Easily accessible branches in Ikeja and Victoria Island.",
+  },
+  {
+    title: "Expert Therapists",
+    description: "Professionally trained staff delivering personalized care.",
+  },
+  {
+    title: "Visible Results",
+    description: "Treatments designed to improve skin health and total wellness.",
+  },
+  {
+    title: "Premium Ambience",
+    description: "Quiet, refined spaces built for deep relaxation.",
+  },
+];

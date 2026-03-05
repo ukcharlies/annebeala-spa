@@ -26,9 +26,10 @@ export default function Footer() {
         <div>
           <h3 className="text-xl">Contact</h3>
           <ul className="mt-3 space-y-2 text-sm text-brand-ivory/80">
-            <li>Lagos, Nigeria</li>
-            <li>+234 800 000 0000</li>
-            <li>hello@annebealaspa.com</li>
+            <li>Ikeja: 29C Remi Fani-Kayode, Ikeja GRA</li>
+            <li>VI: Victoria Island, Lagos</li>
+            <li>+234 703 973 8924</li>
+            <li>+234 916 413 3000</li>
           </ul>
         </div>
 
