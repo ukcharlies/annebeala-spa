@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { branches, brandPillars } from "@/lib/content";
+import { branches, brandPillars, socialReels } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "About",
@@ -47,25 +47,24 @@ export default function AboutPage() {
       </section>
 
       <section className="section-shell mt-12">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <article className="glass-card p-7 md:p-8">
-            <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">Our Mission</p>
-            <h2 className="mt-3 text-4xl text-brand-charcoal">Premium Results, Personalized Experience</h2>
-            <p className="mt-4 text-sm leading-7 text-brand-charcoal/80">
-              Every treatment is built around your needs, skin profile, and recovery goals. We blend
-              professional spa methods with consistent service quality to deliver comfort and visible
-              improvement.
+        <div className="glass-card p-7 md:p-10">
+          <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">Our Story</p>
+          <h2 className="mt-3 max-w-4xl text-5xl text-brand-charcoal">Where Luxury Meets Professional Wellness</h2>
+          <div className="mt-6 space-y-5 text-base leading-8 text-brand-charcoal/80">
+            <p>
+              At Annebeala Spa, we believe wellness should feel intentional, not rushed. Every client
+              journey is designed around comfort, technical expertise, and measurable results.
             </p>
-          </article>
-
-          <article className="glass-card p-7 md:p-8">
-            <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">Our Promise</p>
-            <h2 className="mt-3 text-4xl text-brand-charcoal">Consistency Across Both Branches</h2>
-            <p className="mt-4 text-sm leading-7 text-brand-charcoal/80">
-              Whether you visit Ikeja or VI, you get the same premium standard in hygiene,
-              therapist quality, ambience, and customer care.
+            <p>
+              From deep relaxation to advanced skin-focused treatments, our team blends premium spa
+              rituals with modern care standards. We are built for clients who want more than a quick
+              session, clients who value atmosphere, hygiene, consistency, and service excellence.
             </p>
-          </article>
+            <p>
+              With branches in <strong>Ikeja</strong> and <strong>Victoria Island</strong>, Annebeala Spa
+              serves Lagos clients who want trusted care close to where they live and work.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -76,7 +75,10 @@ export default function AboutPage() {
 
           <div className="mt-10 space-y-6">
             {brandPillars.map((pillar, index) => (
-              <article key={pillar.title} className="grid gap-4 rounded-2xl border border-brand-ivory/20 p-6 md:grid-cols-[5rem,1fr] md:items-start">
+              <article
+                key={pillar.title}
+                className="grid gap-4 rounded-2xl border border-brand-ivory/20 p-6 md:grid-cols-[5rem,1fr] md:items-start"
+              >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full border border-brand-sage/50 text-2xl text-brand-sage">
                   {index + 1}
                 </div>
@@ -119,39 +121,43 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">From Our Socials</p>
-              <h2 className="mt-3 text-4xl">Wellness in Motion</h2>
+              <h2 className="mt-3 text-4xl">Instagram Reels Highlights</h2>
             </div>
             <Link
-              href="https://www.instagram.com/annebeala_spa?igsh=MW1icHh1dnUxOGVtYQ=="
+              href="https://www.instagram.com/annebeala_spa/reels/"
               target="_blank"
               rel="noreferrer"
               className="btn-secondary-dark"
             >
-              Follow on Instagram
+              Open Instagram Reels
             </Link>
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <article className="overflow-hidden rounded-2xl border border-brand-sage/30">
-              <video autoPlay loop muted playsInline preload="metadata" className="h-72 w-full object-cover">
-                <source src="/meassaghe-video.mp4" type="video/mp4" />
-              </video>
-            </article>
-            <article className="relative overflow-hidden rounded-2xl border border-brand-sage/30">
-              <Image
-                src="/engin-akyurt-ZbzYDboN7fg-unsplash.jpg"
-                alt="Luxury spa client care"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover"
-              />
-              <div className="h-72" />
-            </article>
-            <article className="overflow-hidden rounded-2xl border border-brand-sage/30">
-              <video autoPlay loop muted playsInline preload="metadata" className="h-72 w-full object-cover">
-                <source src="/white.mp4" type="video/mp4" />
-              </video>
-            </article>
+            {socialReels.slice(0, 3).map((reel) => (
+              <article key={reel.title} className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70">
+                <div className="relative aspect-[4/5]">
+                  {reel.type === "video" ? (
+                    <video autoPlay loop muted playsInline preload="metadata" poster={reel.poster} className="h-full w-full object-cover">
+                      <source src={reel.src} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <Image
+                      src={reel.src}
+                      alt={reel.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/75 to-transparent" />
+                  <p className="absolute bottom-3 left-3 text-xs text-brand-ivory/95">▶ {reel.views}</p>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-base text-brand-ivory">{reel.title}</h3>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
