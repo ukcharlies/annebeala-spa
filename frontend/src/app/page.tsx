@@ -81,14 +81,9 @@ export default function Home() {
 
             <div className="grid min-h-[26rem] grid-cols-12 grid-rows-12 gap-3 sm:min-h-[34rem]">
               <article className="relative col-span-7 row-span-7 overflow-hidden rounded-2xl border border-brand-ivory/20 shadow-2xl">
-                <Image
-                  src="/marketting.png"
-                  alt="Annebeala Spa interior"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 65vw, 34vw"
-                  className="object-cover"
-                />
+                <video autoPlay loop muted playsInline preload="metadata" className="h-full w-full object-cover">
+                  <source src="/face-massage.mp4" type="video/mp4" />
+                </video>
               </article>
 
               <article className="relative col-span-5 row-span-8 overflow-hidden rounded-2xl border border-brand-sage/35 shadow-2xl">
@@ -133,13 +128,26 @@ export default function Home() {
             {homeServiceShowcase.map((category, index) => (
               <article key={category.id} className="grid overflow-hidden rounded-3xl border border-brand-ivory/20 md:grid-cols-2">
                 <div className={`relative min-h-72 ${index % 2 ? "md:order-2" : ""}`}>
-                  <Image
-                    src={category.image}
-                    alt={category.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
+                  {category.video ? (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    >
+                      <source src={category.video} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <Image
+                      src={category.image}
+                      alt={category.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
                 <div className={`p-8 ${index % 2 ? "md:order-1" : ""}`}>
                   <p className="text-xs uppercase tracking-[0.18em] text-brand-sage">{category.id.replace(/-/g, " ")}</p>

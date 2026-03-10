@@ -10,6 +10,7 @@ export interface ServiceCategory {
   title: string;
   description: string;
   image: string;
+  video?: string;
   items: ServiceItem[];
 }
 
@@ -20,6 +21,7 @@ export const serviceMenu: ServiceCategory[] = [
     description:
       "Therapeutic massage sessions tailored to relieve tension, ease pain, and restore balance to your body.",
     image: "/client%20happy.jpg",
+    video: "/face-massage.mp4",
     items: [
       { name: "Swedish Massage", price: "₦40,000" },
       { name: "Deep Tissue Massage", price: "₦50,000" },
@@ -77,6 +79,7 @@ export const serviceMenu: ServiceCategory[] = [
     description:
       "Pamper your hands and feet with our range of pedicure and manicure options for a polished finish.",
     image: "/marketting.png",
+    video: "/pedicure.mp4",
     items: [
       { name: "Classic Pedicure", price: "₦20,000" },
       { name: "Jelly Pedicure", price: "₦30,000" },
@@ -90,6 +93,7 @@ export const serviceMenu: ServiceCategory[] = [
     description:
       "Professional waxing services for smooth, hair-free skin across all body areas.",
     image: "/engin-akyurt-ZbzYDboN7fg-unsplash.jpg",
+    video: "/waxing.mp4",
     items: [
       { name: "Under Arm", price: "₦15,000" },
       { name: "Full Leg", price: "₦30,000" },

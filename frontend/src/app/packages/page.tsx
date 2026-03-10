@@ -35,7 +35,7 @@ export default function PackagesPage() {
             <a
               key={cat.id}
               href={`#${cat.id}`}
-              className="rounded-full border border-brand-olive/40 bg-brand-ivory px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-charcoal transition hover:bg-brand-charcoal hover:text-brand-ivory"
+              className="rounded-full border border-brand-olive/40 bg-brand-ivory px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-charcoal transition hover:border-brand-forest hover:bg-brand-forest hover:text-brand-ivory"
             >
               {cat.title}
             </a>
