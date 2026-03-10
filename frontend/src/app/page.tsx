@@ -4,9 +4,9 @@ import Link from "next/link";
 import {
   branches,
   brandPillars,
-  packages,
+  packageMenu,
   reviews,
-  services,
+  serviceMenu,
   socialReels,
 } from "@/lib/content";
 
@@ -32,8 +32,8 @@ const jsonLd = {
   priceRange: "$$",
 };
 
-const homeServiceShowcase = services.slice(0, 4);
-const homePackageShowcase = packages;
+const homeServiceShowcase = serviceMenu.slice(0, 4);
+const homePackageShowcase = packageMenu.slice(0, 3);
 const homeReviewShowcase = reviews.slice(0, 4);
 
 export default function Home() {
@@ -130,26 +130,30 @@ export default function Home() {
           </div>
 
           <div className="mt-10 space-y-8">
-            {homeServiceShowcase.map((service, index) => (
-              <article key={service.title} className="grid overflow-hidden rounded-3xl border border-brand-ivory/20 md:grid-cols-2">
+            {homeServiceShowcase.map((category, index) => (
+              <article key={category.id} className="grid overflow-hidden rounded-3xl border border-brand-ivory/20 md:grid-cols-2">
                 <div className={`relative min-h-72 ${index % 2 ? "md:order-2" : ""}`}>
                   <Image
-                    src={service.image}
-                    alt={service.title}
+                    src={category.image}
+                    alt={category.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
                 </div>
                 <div className={`p-8 ${index % 2 ? "md:order-1" : ""}`}>
-                  <p className="text-xs uppercase tracking-[0.18em] text-brand-sage">{service.category}</p>
-                  <h3 className="mt-3 text-4xl">{service.title}</h3>
-                  <div className="mt-3 flex flex-wrap gap-3 text-xs uppercase tracking-[0.12em] text-brand-sage">
-                    <span>{service.duration}</span>
-                    <span>•</span>
-                    <span>{service.priceFrom}</span>
-                  </div>
-                  <p className="mt-4 text-sm leading-7 text-brand-ivory/80">{service.details}</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-brand-sage">{category.id.replace(/-/g, " ")}</p>
+                  <h3 className="mt-3 text-4xl">{category.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-brand-ivory/80">{category.description}</p>
+                  <ul className="mt-4 space-y-2">
+                    {category.items.slice(0, 5).map((item) => (
+                      <li key={item.name} className="flex items-center gap-3 text-sm text-brand-ivory/85">
+                        <span>{item.name}</span>
+                        <span className="h-px flex-1 bg-brand-ivory/20" />
+                        <span className="text-brand-sage">{item.price}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </article>
             ))}
@@ -173,23 +177,27 @@ export default function Home() {
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
-          {homePackageShowcase.map((pack) => (
-            <article key={pack.name} className="glass-card overflow-hidden">
+          {homePackageShowcase.map((cat) => (
+            <article key={cat.id} className="glass-card overflow-hidden">
               <div className="relative h-52">
-                <Image src={pack.image} alt={pack.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover" />
+                <Image src={cat.image} alt={cat.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover" />
               </div>
               <div className="p-6">
-                <h3 className="text-3xl text-brand-charcoal">{pack.name}</h3>
-                <div className="mt-3 flex items-center justify-between text-xs uppercase tracking-[0.14em] text-brand-olive">
-                  <span>{pack.duration}</span>
-                  <span>{pack.price}</span>
-                </div>
+                <h3 className="text-3xl text-brand-charcoal">{cat.title}</h3>
+                <p className="mt-2 text-sm text-brand-charcoal/70">{cat.tagline}</p>
                 <ul className="mt-4 space-y-2 text-sm text-brand-charcoal/80">
-                  {pack.includes.map((item) => (
-                    <li key={item}>• {item}</li>
+                  {cat.packages.slice(0, 3).map((pkg) => (
+                    <li key={pkg.name} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-forest" />
+                      <span>{pkg.name}</span>
+                      <span className="h-px flex-1 bg-brand-olive/20" />
+                      <span className="font-semibold">{pkg.price}</span>
+                    </li>
                   ))}
                 </ul>
-                <p className="mt-4 text-xs uppercase tracking-[0.12em] text-brand-olive">Ideal for: {pack.idealFor}</p>
+                <Link href={`/packages#${cat.id}`} className="mt-4 inline-block text-xs font-semibold uppercase tracking-[0.14em] text-brand-forest underline underline-offset-4">
+                  See All {cat.title}
+                </Link>
               </div>
             </article>
           ))}
