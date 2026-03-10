@@ -55,7 +55,7 @@ export default function Header() {
           ))}
           <Link
             href="/booking"
-            className="rounded-full bg-brand-forest px-5 py-2 text-xs font-semibold text-brand-ivory transition hover:bg-brand-charcoal"
+            className="rounded-full bg-brand-forest px-5 py-2 text-xs font-semibold text-brand-ivory transition hover:bg-brand-sage hover:text-brand-charcoal"
           >
             Book Now
           </Link>

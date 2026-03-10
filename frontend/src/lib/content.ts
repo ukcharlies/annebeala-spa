@@ -21,7 +21,7 @@ export const serviceMenu: ServiceCategory[] = [
     description:
       "Therapeutic massage sessions tailored to relieve tension, ease pain, and restore balance to your body.",
     image: "/client%20happy.jpg",
-    video: "/face-massage.mp4",
+    video: "/meassaghe-video.mp4",
     items: [
       { name: "Swedish Massage", price: "₦40,000" },
       { name: "Deep Tissue Massage", price: "₦50,000" },
@@ -60,6 +60,7 @@ export const serviceMenu: ServiceCategory[] = [
     description:
       "Advanced facial treatments to target acne, aging, dullness, and uneven skin tone for a visible glow.",
     image: "/incense.jpg",
+    video: "/face-massage.mp4",
     items: [
       { name: "Collagen Facials", price: "₦50,000" },
       { name: "Deep Cleansing Facial", price: "₦40,000" },
@@ -143,7 +144,8 @@ export const packageMenu: PackageCategory[] = [
   {
     id: "birthday",
     title: "Birthday Packages",
-    tagline: "Celebrate your special day with a curated spa experience and treats",
+    tagline:
+      "Celebrate your special day with a curated spa experience and treats",
     image: "/client%20happy.jpg",
     packages: [
       {
@@ -185,7 +187,8 @@ export const packageMenu: PackageCategory[] = [
   {
     id: "couples",
     title: "Couples Spa Packages",
-    tagline: "Side-by-side treatments for partners, friends, and special celebrations",
+    tagline:
+      "Side-by-side treatments for partners, friends, and special celebrations",
     image: "/engin-akyurt-ZbzYDboN7fg-unsplash.jpg",
     packages: [
       {
@@ -359,7 +362,8 @@ export const brandPillars = [
   },
   {
     title: "Affordable Luxury",
-    description: "Premium wellness service with transparent pricing and clear value.",
+    description:
+      "Premium wellness service with transparent pricing and clear value.",
   },
   {
     title: "Expert Therapists",

@@ -35,7 +35,7 @@ export default function ServicesPage() {
             <a
               key={cat.id}
               href={`#${cat.id}`}
-              className="rounded-full border border-brand-olive/40 bg-brand-ivory px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-charcoal transition hover:bg-brand-charcoal hover:text-brand-ivory"
+              className="rounded-full border border-brand-olive/40 bg-brand-ivory px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-charcoal transition hover:border-brand-forest hover:bg-brand-forest hover:text-brand-ivory"
             >
               {cat.title}
             </a>
@@ -58,13 +58,26 @@ export default function ServicesPage() {
               }`}
             >
               <div className="relative min-h-64 lg:min-h-80">
-                <Image
-                  src={category.image}
-                  alt={category.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
-                />
+                {category.video ? (
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  >
+                    <source src={category.video} type="video/mp4" />
+                  </video>
+                ) : (
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 45vw"
+                    className="object-cover"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-brand-charcoal/20" />
               </div>
 
