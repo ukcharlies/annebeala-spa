@@ -17,12 +17,20 @@ export default function ReviewsPage() {
     <>
       <section className="section-shell pt-10">
         <div className="rounded-3xl border border-brand-olive/30 bg-brand-charcoal p-8 text-brand-ivory md:p-12">
-          <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">Client Testimonials</p>
-          <h1 className="mt-3 max-w-4xl text-5xl leading-tight md:text-6xl">What Our Guests Say About Annebeala Spa</h1>
+          <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">
+            Client Testimonials
+          </p>
+          <h1 className="mt-3 max-w-4xl text-5xl leading-tight md:text-6xl">
+            What Our Guests Say About Annebeala Spa
+          </h1>
           <div className="mt-6 flex flex-wrap items-center gap-5 text-brand-sage">
             <p className="text-2xl">★★★★★</p>
-            <p className="text-sm uppercase tracking-[0.14em] text-brand-ivory/85">{averageRating} average rating</p>
-            <p className="text-sm uppercase tracking-[0.14em] text-brand-ivory/85">Based on {reviews.length}+ recent reviews</p>
+            <p className="text-sm uppercase tracking-[0.14em] text-brand-ivory/85">
+              {averageRating} average rating
+            </p>
+            <p className="text-sm uppercase tracking-[0.14em] text-brand-ivory/85">
+              Based on {reviews.length}+ recent reviews
+            </p>
           </div>
         </div>
       </section>
@@ -30,17 +38,28 @@ export default function ReviewsPage() {
       <section className="section-shell mt-12">
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {reviews.map((review) => (
-            <article key={review.name} className="rounded-2xl border border-brand-olive/30 bg-white p-6 shadow-sm">
+            <article
+              key={review.name}
+              className="rounded-2xl border border-brand-olive/30 bg-white p-6 shadow-sm"
+            >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-2xl text-brand-charcoal">{review.name}</h2>
-                  <p className="text-xs uppercase tracking-[0.12em] text-brand-olive">{review.role}</p>
+                  <h2 className="text-2xl text-brand-charcoal">
+                    {review.name}
+                  </h2>
+                  <p className="text-xs uppercase tracking-[0.12em] text-brand-olive">
+                    {review.role}
+                  </p>
                 </div>
                 <p className="text-xs text-brand-olive">{review.date}</p>
               </div>
 
-              <p className="mt-4 text-base text-amber-500">{"★".repeat(review.rating)}</p>
-              <p className="mt-4 text-sm leading-7 text-brand-charcoal/80">“{review.quote}”</p>
+              <p className="mt-4 text-base text-amber-500">
+                {"★".repeat(review.rating)}
+              </p>
+              <p className="mt-4 text-sm leading-7 text-brand-charcoal/80">
+                “{review.quote}”
+              </p>
             </article>
           ))}
         </div>
@@ -48,8 +67,12 @@ export default function ReviewsPage() {
 
       <section className="section-shell mt-14">
         <div className="rounded-3xl border border-brand-olive/25 bg-brand-ivory p-7 md:p-10">
-          <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">Featured Testimonial</p>
-          <h2 className="mt-3 text-5xl text-brand-charcoal">Trusted by Returning Guests</h2>
+          <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">
+            Featured Testimonial
+          </p>
+          <h2 className="mt-3 text-5xl text-brand-charcoal">
+            Trusted by Returning Guests
+          </h2>
           <p className="mt-7 max-w-4xl text-3xl leading-tight text-brand-charcoal">
             “{reviews[0].quote}”
           </p>
@@ -63,11 +86,13 @@ export default function ReviewsPage() {
         <div className="rounded-3xl border border-brand-olive/25 bg-brand-charcoal p-6 text-brand-ivory md:p-10">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">Social Reviews</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">
+                Social Reviews
+              </p>
               <h2 className="mt-3 text-4xl">See More on Instagram Reels</h2>
               <p className="mt-4 text-sm leading-7 text-brand-ivory/80">
-                For behind-the-scenes treatment clips and live client moments, explore our Instagram
-                reels feed.
+                For behind-the-scenes treatment clips and live client moments,
+                explore our Instagram reels feed.
               </p>
             </div>
             <Link
@@ -82,23 +107,42 @@ export default function ReviewsPage() {
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {socialReels.slice(0, 3).map((reel) => (
-              <article key={reel.title} className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70">
-                <div className="relative aspect-[4/5]">
+              <article
+                key={reel.title}
+                className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70"
+              >
+                <div className="relative aspect-4/5">
                   {reel.type === "video" ? (
-                    <video autoPlay loop muted playsInline preload="metadata" poster={reel.poster} className="h-full w-full object-cover">
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      poster={reel.poster}
+                      className="h-full w-full object-cover"
+                    >
                       <source src={reel.src} type="video/mp4" />
                     </video>
                   ) : (
-                    <Image src={reel.src} alt={reel.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                    <Image
+                      src={reel.src}
+                      alt={reel.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                    />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/75 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-brand-charcoal/75 to-transparent" />
                   <div className="absolute left-3 top-3 rounded-full bg-brand-forest/90 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-brand-ivory">
                     Reel
                   </div>
                 </div>
                 <div className="p-4">
                   <h3 className="text-base text-brand-ivory">{reel.title}</h3>
-                  <p className="mt-2 text-xs text-brand-sage">▶ {reel.views} • ♥ {reel.likes}</p>
+                  <p className="mt-2 text-xs text-brand-sage">
+                    ▶ {reel.views} • ♥ {reel.likes}
+                  </p>
                 </div>
               </article>
             ))}
