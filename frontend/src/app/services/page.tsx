@@ -1,75 +1,120 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { services } from "@/lib/content";
+import { serviceMenu } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services | Annebeala Spa",
   description:
-    "Explore massage therapy, facials, body treatments, and wellness rituals at Annebeala Spa.",
+    "Explore our full treatment menu — massage therapy, body treatments, facials, pedicure & manicure, waxing, and teeth whitening at Annebeala Spa Lagos.",
 };
 
 export default function ServicesPage() {
   return (
     <>
+      {/* ── Hero ── */}
       <section className="section-shell pt-10">
         <div className="rounded-3xl border border-brand-olive/30 bg-brand-charcoal p-8 text-brand-ivory md:p-12">
-          <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">Spa Services</p>
-          <h1 className="mt-3 max-w-4xl text-5xl leading-tight md:text-6xl">Treatment Menu Built for Results</h1>
+          <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">
+            Our Treatment Menu
+          </p>
+          <h1 className="mt-3 max-w-4xl text-5xl leading-tight md:text-6xl">
+            Every Treatment, Every Price — All in One Place
+          </h1>
           <p className="mt-5 max-w-3xl text-base leading-7 text-brand-ivory/80">
-            From full-body massage to advanced facials and detox rituals, our service menu is
-            designed for visible wellness outcomes and deep relaxation.
+            From deep tissue massage to hydra facials, body scrubs, waxing, and
+            teeth whitening — explore our complete menu with transparent pricing.
           </p>
         </div>
       </section>
 
-      <section className="section-shell mt-12">
-        <div className="space-y-8">
-          {services.map((service, index) => (
-            <article key={service.title} className="grid overflow-hidden rounded-3xl border border-brand-olive/25 bg-brand-ivory shadow-sm lg:grid-cols-[0.95fr,1.05fr]">
-              <div className={`relative min-h-72 ${index % 2 ? "lg:order-2" : ""}`}>
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className={`p-7 md:p-9 ${index % 2 ? "lg:order-1" : ""}`}>
-                <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">{service.category}</p>
-                <h2 className="mt-3 text-4xl text-brand-charcoal">{service.title}</h2>
-                <div className="mt-3 flex flex-wrap gap-3 text-xs uppercase tracking-[0.12em] text-brand-olive">
-                  <span>{service.duration}</span>
-                  <span>•</span>
-                  <span>{service.priceFrom}</span>
-                </div>
-                <p className="mt-5 text-sm leading-7 text-brand-charcoal/80">{service.details}</p>
-              </div>
-            </article>
+      {/* ── Quick Nav ── */}
+      <section className="section-shell mt-10">
+        <div className="flex flex-wrap gap-3">
+          {serviceMenu.map((cat) => (
+            <a
+              key={cat.id}
+              href={`#${cat.id}`}
+              className="rounded-full border border-brand-olive/40 bg-brand-ivory px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-charcoal transition hover:bg-brand-charcoal hover:text-brand-ivory"
+            >
+              {cat.title}
+            </a>
           ))}
         </div>
       </section>
 
-      <section className="section-shell mt-14">
-        <div className="rounded-3xl border border-brand-olive/25 bg-brand-charcoal p-7 text-brand-ivory md:p-10">
-          <p className="text-xs uppercase tracking-[0.2em] text-brand-sage">Quick Pricing Guide</p>
-          <h2 className="mt-3 text-4xl">Top Requested Treatments</h2>
-          <ul className="mt-8 space-y-6">
-            {services.slice(0, 5).map((service) => (
-              <li key={service.title}>
-                <div className="flex items-center gap-3 text-xl">
-                  <span>{service.title}</span>
-                  <span className="h-px flex-1 bg-brand-ivory/25" />
-                  <span className="text-brand-sage">{service.priceFrom}</span>
-                </div>
-                <p className="mt-2 text-sm text-brand-ivory/75">{service.shortDescription}</p>
-              </li>
-            ))}
-          </ul>
-          <Link href="/booking" className="btn-secondary-dark mt-8">
-            Book a Service
-          </Link>
+      {/* ── Service Categories ── */}
+      <section className="section-shell mt-12 space-y-16">
+        {serviceMenu.map((category, catIdx) => (
+          <article
+            key={category.id}
+            id={category.id}
+            className="scroll-mt-24 overflow-hidden rounded-3xl border border-brand-olive/25 bg-brand-ivory shadow-sm"
+          >
+            {/* Category header with image */}
+            <div
+              className={`grid lg:grid-cols-[0.9fr,1.1fr] ${
+                catIdx % 2 ? "lg:[&>*:first-child]:order-2" : ""
+              }`}
+            >
+              <div className="relative min-h-64 lg:min-h-80">
+                <Image
+                  src={category.image}
+                  alt={category.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-brand-charcoal/20" />
+              </div>
+
+              <div className="p-7 md:p-9">
+                <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">
+                  {category.id.replace(/-/g, " ")}
+                </p>
+                <h2 className="mt-3 text-4xl text-brand-charcoal">
+                  {category.title}
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-brand-charcoal/75">
+                  {category.description}
+                </p>
+
+                {/* Price list */}
+                <ul className="mt-6 space-y-3">
+                  {category.items.map((item) => (
+                    <li key={item.name} className="flex items-center gap-3">
+                      <span className="text-sm text-brand-charcoal">
+                        {item.name}
+                      </span>
+                      <span className="h-px flex-1 bg-brand-olive/25" />
+                      <span className="text-sm font-semibold text-brand-charcoal">
+                        {item.price}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </article>
+        ))}
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="section-shell mt-14 pb-2">
+        <div className="rounded-3xl border border-brand-olive/25 bg-brand-charcoal p-8 text-brand-ivory md:p-10">
+          <h2 className="text-4xl">Ready to Book a Treatment?</h2>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-brand-ivory/80">
+            Choose any service from our menu and schedule your appointment. Walk-ins
+            welcome at both our Ikeja and Victoria Island branches.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-4">
+            <Link href="/booking" className="btn-primary">
+              Book a Session
+            </Link>
+            <Link href="/packages" className="btn-secondary-dark">
+              View Packages
+            </Link>
+          </div>
         </div>
       </section>
     </>

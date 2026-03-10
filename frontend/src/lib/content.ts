@@ -1,111 +1,282 @@
-export const services = [
+/* ─── SERVICE MENU (actual Annebeala Spa pricing) ─── */
+
+export interface ServiceItem {
+  name: string;
+  price: string;
+}
+
+export interface ServiceCategory {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  items: ServiceItem[];
+}
+
+export const serviceMenu: ServiceCategory[] = [
   {
-    title: "Signature Massage Therapy",
-    category: "Body Wellness",
-    duration: "60 - 90 mins",
-    priceFrom: "From ₦45,000",
-    shortDescription:
-      "Deep tissue, Swedish, and aroma therapy sessions tailored to release stress and ease tension.",
-    details:
-      "Our therapists combine pressure mapping and restorative techniques to improve circulation, reduce muscle stiffness, and deliver full-body calm.",
+    id: "body-massage",
+    title: "Body Massage Therapy",
+    description:
+      "Therapeutic massage sessions tailored to relieve tension, ease pain, and restore balance to your body.",
     image: "/client%20happy.jpg",
+    items: [
+      { name: "Swedish Massage", price: "₦40,000" },
+      { name: "Deep Tissue Massage", price: "₦50,000" },
+      { name: "Aromatherapy Massage", price: "₦60,000" },
+      { name: "Wood Therapy", price: "₦50,000" },
+      { name: "Gun Massage", price: "₦50,000" },
+      { name: "Focus Massage", price: "₦30,000" },
+      { name: "Reflexology", price: "₦30,000" },
+      { name: "Couple Massage", price: "₦100,000" },
+      { name: "Four Hands Massage", price: "₦100,000" },
+      { name: "Sculpting Massage", price: "₦60,000" },
+      { name: "Lymphatic Massage", price: "₦60,000" },
+    ],
   },
   {
-    title: "Luxury Facials",
-    category: "Skin Health",
-    duration: "45 - 75 mins",
-    priceFrom: "From ₦40,000",
-    shortDescription:
-      "Hydration, brightening, and anti-aging facials built around your skin profile.",
-    details:
-      "Each facial starts with a proper skin assessment so we can target acne, dullness, pigmentation, and texture with precise treatment steps.",
-    image: "/incense.jpg",
-  },
-  {
-    title: "Moroccan Hammam & Body Scrubs",
-    category: "Detox Ritual",
-    duration: "75 - 120 mins",
-    priceFrom: "From ₦55,000",
-    shortDescription:
-      "Traditional cleansing rituals, exfoliation, and body polishing for radiant skin.",
-    details:
-      "A complete reset for your body: steam, deep cleansing, and exfoliation protocols that leave your skin soft, clear, and renewed.",
+    id: "body-treatment",
+    title: "Body Treatment",
+    description:
+      "Cleansing, exfoliation, and glow treatments that leave your skin smooth, radiant, and deeply nourished.",
     image: "/laying%20down.jpg",
+    items: [
+      { name: "Glow Body Polish", price: "₦50,000" },
+      { name: "Steam Bath", price: "₦30,000" },
+      { name: "Moroccan Bath", price: "₦50,000" },
+      { name: "Whitening Body Scrub", price: "₦55,000" },
+      { name: "Herman Bath", price: "₦60,000" },
+      { name: "Sugar / Honey Scrub", price: "₦40,000" },
+      { name: "Coffee Scrub", price: "₦40,000" },
+      { name: "Caramel Glow Scrub", price: "₦40,000" },
+      { name: "Body Wash", price: "₦50,000" },
+    ],
   },
   {
-    title: "Steam & Relaxation Rituals",
-    category: "Stress Recovery",
-    duration: "30 - 60 mins",
-    priceFrom: "From ₦30,000",
-    shortDescription:
-      "Heat-based rituals to relax your body, support recovery, and improve overall balance.",
-    details:
-      "Perfect as a standalone reset or as a prep session before massage and facial treatments for better outcomes.",
+    id: "facials",
+    title: "Facials",
+    description:
+      "Advanced facial treatments to target acne, aging, dullness, and uneven skin tone for a visible glow.",
+    image: "/incense.jpg",
+    items: [
+      { name: "Collagen Facials", price: "₦50,000" },
+      { name: "Deep Cleansing Facial", price: "₦40,000" },
+      { name: "Anti-Ageing Facial", price: "₦50,000" },
+      { name: "Acne Facial", price: "₦50,000" },
+      { name: "Face Brightening Facial", price: "₦50,000" },
+      { name: "Basic Facials", price: "₦30,000" },
+      { name: "LED Facials", price: "₦60,000" },
+      { name: "Dermabrasion", price: "₦40,000" },
+      { name: "Fruit Facials", price: "₦35,000" },
+      { name: "Hydra Facial", price: "₦70,000" },
+    ],
+  },
+  {
+    id: "pedicure-manicure",
+    title: "Pedicure & Manicure",
+    description:
+      "Pamper your hands and feet with our range of pedicure and manicure options for a polished finish.",
     image: "/marketting.png",
+    items: [
+      { name: "Classic Pedicure", price: "₦20,000" },
+      { name: "Jelly Pedicure", price: "₦30,000" },
+      { name: "Fruit Pedicure", price: "₦30,000" },
+      { name: "Manicure", price: "₦10,000" },
+    ],
   },
   {
-    title: "Couples Spa Experience",
-    category: "Shared Wellness",
-    duration: "90 - 150 mins",
-    priceFrom: "From ₦95,000",
-    shortDescription:
-      "Curated side-by-side treatments for partners, friends, and special occasions.",
-    details:
-      "Designed for shared relaxation with synchronized treatments, private ambience, and premium hospitality touches.",
+    id: "waxing",
+    title: "Waxing",
+    description:
+      "Professional waxing services for smooth, hair-free skin across all body areas.",
     image: "/engin-akyurt-ZbzYDboN7fg-unsplash.jpg",
+    items: [
+      { name: "Under Arm", price: "₦15,000" },
+      { name: "Full Leg", price: "₦30,000" },
+      { name: "Brazilian Waxing", price: "₦25,000" },
+      { name: "Bikini Waxing", price: "₦30,000" },
+      { name: "Full Chest", price: "₦30,000" },
+      { name: "Face Waxing", price: "₦20,000" },
+      { name: "Nose Waxing", price: "₦10,000" },
+      { name: "Eye Brow Waxing", price: "₦10,000" },
+      { name: "Upper Lip Waxing", price: "₦10,000" },
+      { name: "Full Arm", price: "₦25,000" },
+      { name: "Chin Waxing", price: "₦15,000" },
+      { name: "Half Chest", price: "₦20,000" },
+      { name: "Full Back Waxing", price: "₦25,000" },
+    ],
   },
   {
-    title: "Express Glow Treatments",
-    category: "Quick Care",
-    duration: "30 - 45 mins",
-    priceFrom: "From ₦25,000",
-    shortDescription:
-      "High-impact short sessions for clients who need visible refresh in less time.",
-    details:
-      "Ideal for workdays and events: concise, focused treatments that improve how your skin looks and feels immediately.",
+    id: "dental",
+    title: "Teeth Whitening & Dental Care",
+    description:
+      "Brighten your smile with our professional teeth whitening and polishing treatments.",
     image: "/PHOTO-2026-03-01-11-52-35.jpg",
+    items: [
+      { name: "Teeth Whitening", price: "₦60,000" },
+      { name: "Scaling and Polishing", price: "₦40,000" },
+    ],
   },
 ];
 
-export const packages = [
+/* ─── PACKAGES (actual Annebeala Spa packages) ─── */
+
+export interface PackageItem {
+  name: string;
+  includes: string[];
+  price: string;
+}
+
+export interface PackageCategory {
+  id: string;
+  title: string;
+  tagline: string;
+  image: string;
+  packages: PackageItem[];
+}
+
+export const packageMenu: PackageCategory[] = [
   {
-    name: "Serenity Reset",
-    duration: "90 minutes",
-    price: "₦75,000",
-    includes: [
-      "Back massage",
-      "Mini facial",
-      "Herbal tea recovery",
-      "Shoulder tension release",
-    ],
-    idealFor: "First-time guests and busy professionals",
-    image: "/laying%20down.jpg",
-  },
-  {
-    name: "Glow & Sculpt",
-    duration: "2 hours",
-    price: "₦120,000",
-    includes: [
-      "Advanced facial",
-      "Body polish",
-      "Hydration therapy",
-      "Skin glow protocol",
-    ],
-    idealFor: "Skin-brightening and event prep",
-    image: "/incense.jpg",
-  },
-  {
-    name: "Royal Retreat",
-    duration: "3 hours",
-    price: "₦180,000",
-    includes: [
-      "Full body massage",
-      "Steam ritual",
-      "Luxury facial",
-      "Foot therapy",
-    ],
-    idealFor: "Deep relaxation and full reset",
+    id: "birthday",
+    title: "Birthday Packages",
+    tagline: "Celebrate your special day with a curated spa experience and treats",
     image: "/client%20happy.jpg",
+    packages: [
+      {
+        name: "Birthday Glow",
+        includes: [
+          "Massage",
+          "Facials",
+          "Pedicure & Manicure",
+          "6 inches Cake & Wine",
+        ],
+        price: "₦200,000",
+      },
+      {
+        name: "Birthday Luxe",
+        includes: [
+          "Massage",
+          "Facials",
+          "Teeth Whitening",
+          "Body Scrub",
+          "Pedicure & Manicure",
+          "Cake + Wine + Chocolate",
+        ],
+        price: "₦300,000",
+      },
+      {
+        name: "Birthday Royal",
+        includes: [
+          "Massage",
+          "Facials",
+          "Teeth Whitening",
+          "Body Scrub",
+          "Pedicure & Manicure",
+          "Cake + Wine + Chocolate + Bouquet",
+        ],
+        price: "₦350,000",
+      },
+    ],
+  },
+  {
+    id: "couples",
+    title: "Couples Spa Packages",
+    tagline: "Side-by-side treatments for partners, friends, and special celebrations",
+    image: "/engin-akyurt-ZbzYDboN7fg-unsplash.jpg",
+    packages: [
+      {
+        name: "Couples Essentials",
+        includes: ["Massage", "Pedicure & Manicure"],
+        price: "₦160,000",
+      },
+      {
+        name: "Couples Refresh",
+        includes: ["Massage", "Facials", "Pedicure & Manicure"],
+        price: "₦240,000",
+      },
+      {
+        name: "Couples Glow",
+        includes: ["Massage", "Facials", "Teeth Whitening", "Body Scrub"],
+        price: "₦380,000",
+      },
+      {
+        name: "Couples Ultimate",
+        includes: [
+          "Facials",
+          "Teeth Whitening",
+          "Pedicure & Manicure",
+          "Body Scrub",
+          "Massage",
+        ],
+        price: "₦440,000",
+      },
+    ],
+  },
+  {
+    id: "spa",
+    title: "Spa Packages",
+    tagline: "Individual wellness combos for a complete head-to-toe reset",
+    image: "/laying%20down.jpg",
+    packages: [
+      {
+        name: "Quick Glow",
+        includes: ["Full Body Scrub", "Facials"],
+        price: "₦80,000",
+      },
+      {
+        name: "Relax & Glow",
+        includes: ["Full Body Massage", "Facials"],
+        price: "₦80,000",
+      },
+      {
+        name: "Classic Spa",
+        includes: [
+          "Full Body Scrub",
+          "Full Body Massage",
+          "Pedicure & Manicure",
+        ],
+        price: "₦110,000",
+      },
+      {
+        name: "Premium Spa",
+        includes: [
+          "Full Body Scrub",
+          "Facials",
+          "Full Body Massage",
+          "Pedicure & Manicure",
+        ],
+        price: "₦150,000",
+      },
+    ],
+  },
+  {
+    id: "friendship",
+    title: "Friendship Spa Packages",
+    tagline: "Bond with your besties over relaxation and glow-up sessions",
+    image: "/incense.jpg",
+    packages: [
+      {
+        name: "Friends Chill",
+        includes: ["Massage", "Facials", "Body Scrub"],
+        price: "₦260,000",
+      },
+      {
+        name: "Friends Glow",
+        includes: ["Massage", "Facials", "Pedicure & Manicure", "Body Scrub"],
+        price: "₦320,000",
+      },
+      {
+        name: "Friends Ultimate",
+        includes: [
+          "Massage",
+          "Facials",
+          "Teeth Whitening",
+          "Body Scrub",
+          "Pedicure & Manicure",
+        ],
+        price: "₦440,000",
+      },
+    ],
   },
 ];
 
@@ -199,8 +370,9 @@ export const brandPillars = [
     description: "Quiet, refined spaces built for deep relaxation.",
   },
   {
-    title: "Couples Packages",
-    description: "Shared wellness experiences for celebrations and bonding.",
+    title: "Celebration Packages",
+    description:
+      "Birthday, couples, and friendship packages for every occasion.",
   },
 ];
 

@@ -47,7 +47,18 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-brand-ivory/10 py-4 text-center text-xs text-brand-ivory/70">
-        © {new Date().getFullYear()} Annebeala Spa. All rights reserved.
+        <p>© {new Date().getFullYear()} Annebeala Spa. All rights reserved.</p>
+        <p className="mt-1">
+          Developed by{" "}
+          <a
+            href="https://6ixsuite.me/personal-portfolio/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-brand-sage underline decoration-brand-forest/80 underline-offset-4 transition hover:text-brand-ivory"
+          >
+            6ixthdev
+          </a>
+        </p>
       </div>
     </footer>
   );
