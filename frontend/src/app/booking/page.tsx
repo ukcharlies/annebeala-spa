@@ -1,37 +1,30 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import InquiryForm from "@/components/InquiryForm";
+import BookingWizard from "@/components/BookingWizard";
 
 export const metadata: Metadata = {
-  title: "Booking",
+  title: "Book an Appointment | Annebeala Spa",
   description:
-    "Start your booking request for Annebeala Spa. Instant online booking is currently under review.",
+    "Book your spa session at Annebeala Spa Lagos. Select a branch, pick your treatment, and secure your slot with a small commitment deposit.",
 };
 
 export default function BookingPage() {
   return (
-    <section className="section-shell pt-16">
-      <div className="grid gap-8 lg:grid-cols-2">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">Booking</p>
-          <h1 className="mt-4 text-5xl text-brand-charcoal">Instant Booking Is Under Review</h1>
-          <div className="gold-divider mt-6" />
-          <p className="mt-6 text-base leading-7 text-brand-charcoal/80">
-            We are finalizing the direct booking flow. For now, send your preferred date and
-            treatment and our team will confirm your slot quickly.
+    <section className="section-shell py-12">
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-8 text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">
+            Annebeala Spa
           </p>
-
-          <Link
-            href="https://www.instagram.com/annebeala_spa?igsh=MW1icHh1dnUxOGVtYQ=="
-            target="_blank"
-            rel="noreferrer"
-            className="mt-6 inline-block text-sm text-brand-olive underline"
-          >
-            You can also book via Instagram DM
-          </Link>
+          <h1 className="mt-3 text-4xl text-brand-charcoal md:text-5xl">
+            Book Your Session
+          </h1>
+          <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-brand-charcoal/75">
+            Choose your branch and treatment, fill in your details, and pay a
+            small commitment fee to lock in your appointment.
+          </p>
         </div>
 
-        <InquiryForm formType="booking" />
+        <BookingWizard />
       </div>
     </section>
   );

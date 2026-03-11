@@ -343,14 +343,14 @@ export const branches = [
     name: "Ikeja Branch",
     area: "Ikeja GRA, Lagos",
     address: "29C Remi Fani-Kayode Avenue, Ikeja GRA, Lagos",
-    phone: "+234 703 973 8924",
+    phone: "+234 708 846 5499",
     hours: "Mon - Sat: 9:30am - 7:00pm | Sun: 12:00pm - 7:00pm",
   },
   {
     name: "VI Branch",
     area: "Victoria Island, Lagos",
     address: "Annebeala Spa, Victoria Island, Lagos",
-    phone: "+234 916 413 3000",
+    phone: "+234 708 846 5499",
     hours: "Mon - Sat: 9:30am - 7:00pm | Sun: 12:00pm - 7:00pm",
   },
 ];
@@ -436,3 +436,22 @@ export const socialReels = [
     url: "https://www.instagram.com/annebeala_spa/reels/",
   },
 ];
+
+/* ─── BOOKING CONFIG ─── */
+
+export const bookingConfig = {
+  /** Commitment deposit required to hold a slot */
+  commitmentFee: "₦20,000",
+  commitmentFeeRaw: 20_000,
+  currency: "NGN",
+  /** Bank details for manual transfer */
+  bankDetails: {
+    bankName: "Opay",
+    accountName: "Annebeala Spa",
+    accountNumber: "6104411498",
+  },
+  /** WhatsApp number (international format, no +) for receipt forwarding */
+  whatsappNumber: "2347088465499",
+  /** Instagram handle as fallback */
+  instagram: "@annebeala_spa",
+};
