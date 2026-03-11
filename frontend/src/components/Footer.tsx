@@ -28,8 +28,7 @@ export default function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-brand-ivory/80">
             <li>Ikeja: 29C Remi Fani-Kayode, Ikeja GRA</li>
             <li>VI: Victoria Island, Lagos</li>
-            <li>+234 703 973 8924</li>
-            <li>+234 916 413 3000</li>
+            <li>+234 708 846 5499</li>
           </ul>
         </div>
 

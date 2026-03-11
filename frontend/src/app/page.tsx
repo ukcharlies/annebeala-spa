@@ -27,7 +27,7 @@ const jsonLd = {
     addressCountry: "NG",
   },
   url: "https://annebealaspa.com",
-  telephone: "+2348000000000",
+  telephone: "+2347088465499",
   sameAs: ["https://www.instagram.com/annebeala_spa?igsh=MW1icHh1dnUxOGVtYQ=="],
   priceRange: "$$",
 };
