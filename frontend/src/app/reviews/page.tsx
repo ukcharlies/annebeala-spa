@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { reviews, socialReels } from "@/lib/content";
 
@@ -112,37 +111,28 @@ export default function ReviewsPage() {
                 className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70"
               >
                 <div className="relative aspect-4/5">
-                  {reel.type === "video" ? (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      poster={reel.poster}
-                      className="h-full w-full object-cover"
-                    >
-                      <source src={reel.src} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <Image
-                      src={reel.src}
-                      alt={reel.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-linear-to-t from-brand-charcoal/75 to-transparent" />
-                  <div className="absolute left-3 top-3 rounded-full bg-brand-forest/90 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-brand-ivory">
-                    Reel
-                  </div>
+                  <iframe
+                    src={`${reel.url.replace(/\\/$/, "")}/embed`}
+                    title={reel.title}
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="h-full w-full border-0"
+                  />
                 </div>
                 <div className="p-4">
                   <h3 className="text-base text-brand-ivory">{reel.title}</h3>
                   <p className="mt-2 text-xs text-brand-sage">
                     ▶ {reel.views} • ♥ {reel.likes}
                   </p>
+                  <Link
+                    href={reel.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-3 inline-block text-[0.65rem] uppercase tracking-[0.14em] text-brand-sage underline underline-offset-4"
+                  >
+                    Watch on Instagram
+                  </Link>
                 </div>
               </article>
             ))}

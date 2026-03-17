@@ -308,38 +308,21 @@ export default function Home() {
                 className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70"
               >
                 <div className="relative aspect-[9/12]">
-                  {reel.type === "video" ? (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      poster={reel.poster}
-                      className="h-full w-full object-cover"
-                    >
-                      <source src={reel.src} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <Image
-                      src={reel.src}
-                      alt={reel.title}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 25vw"
-                      className="object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/85 via-transparent to-transparent" />
-                  <div className="absolute left-3 top-3 rounded-full bg-brand-forest/90 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-brand-ivory">
-                    Reel
-                  </div>
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-brand-ivory/95">
-                    <span>▶ {reel.views}</span>
-                    <span>♥ {reel.likes}</span>
-                  </div>
+                  <iframe
+                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
+                    title={reel.title}
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="h-full w-full border-0"
+                  />
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg text-brand-ivory">{reel.title}</h3>
+                  <div className="mt-2 flex items-center gap-4 text-xs text-brand-ivory/85">
+                    <span>▶ {reel.views}</span>
+                    <span>♥ {reel.likes}</span>
+                  </div>
                   <Link
                     href={reel.url}
                     target="_blank"

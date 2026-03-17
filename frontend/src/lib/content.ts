@@ -392,7 +392,7 @@ export const socialReels = [
     poster: "/incense.jpg",
     views: "12.8k",
     likes: "1.4k",
-    url: "https://www.instagram.com/annebeala_spa/reels/",
+    url: "https://www.instagram.com/reel/DV080eKMsbv/",
   },
   {
     title: "Luxury Recovery Session",
@@ -401,7 +401,7 @@ export const socialReels = [
     poster: "/client%20happy.jpg",
     views: "9.3k",
     likes: "1.1k",
-    url: "https://www.instagram.com/annebeala_spa/reels/",
+    url: "https://www.instagram.com/reel/DVf6ms5BbxB/",
   },
   {
     title: "Treatment Room Tour",
@@ -409,7 +409,7 @@ export const socialReels = [
     src: "/marketting.png",
     views: "6.7k",
     likes: "680",
-    url: "https://www.instagram.com/annebeala_spa/reels/",
+    url: "https://www.instagram.com/reel/DVYNXyNDJI4/",
   },
   {
     title: "Deep Tissue Technique",
@@ -417,7 +417,7 @@ export const socialReels = [
     src: "/laying%20down.jpg",
     views: "8.2k",
     likes: "940",
-    url: "https://www.instagram.com/annebeala_spa/reels/",
+    url: "https://www.instagram.com/reel/DVYNXyNDJI4/",
   },
   {
     title: "Facial Ritual in Progress",
@@ -425,7 +425,7 @@ export const socialReels = [
     src: "/engin-akyurt-ZbzYDboN7fg-unsplash.jpg",
     views: "11.1k",
     likes: "1.2k",
-    url: "https://www.instagram.com/annebeala_spa/reels/",
+    url: "https://www.instagram.com/reel/DU0PBRgjFpR/",
   },
   {
     title: "Client Glow Result",
@@ -433,7 +433,7 @@ export const socialReels = [
     src: "/client%20happy.jpg",
     views: "7.9k",
     likes: "830",
-    url: "https://www.instagram.com/annebeala_spa/reels/",
+    url: "https://www.instagram.com/reel/DUiE5tkDIL2/",
   },
 ];
 
