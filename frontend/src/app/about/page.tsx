@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { branches, brandPillars, socialReels } from "@/lib/content";
+import { attachInstagramThumbnails } from "@/lib/instagram";
 
 export const metadata: Metadata = {
   title: "About",
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
     "Discover Annebeala Spa, our philosophy, branches in Ikeja and VI, and our commitment to premium wellness care.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const reelsWithEmbeds = await attachInstagramThumbnails(
+    socialReels.slice(0, 3),
+  );
+
   return (
     <>
       <section className="section-shell pt-10">
@@ -134,21 +139,40 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {socialReels.slice(0, 3).map((reel) => (
+            {reelsWithEmbeds.map((reel) => (
               <article key={reel.title} className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70">
-                <div className="relative aspect-[4/5]">
-                  <iframe
-                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
-                    title={reel.title}
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="h-full w-full border-0"
-                  />
-                </div>
+                <Link
+                  href={reel.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative block aspect-[4/5] overflow-hidden"
+                  aria-label={`Open ${reel.title} on Instagram`}
+                >
+                  {reel.thumbnailUrl.startsWith("http") ? (
+                    <img
+                      src={reel.thumbnailUrl}
+                      alt={reel.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                    />
+                  ) : (
+                    <Image
+                      src={reel.thumbnailUrl}
+                      alt={reel.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/70 via-transparent to-transparent" />
+                  <div className="absolute inset-0 grid place-items-center">
+                    <div className="rounded-full bg-white/80 px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-brand-charcoal">
+                      Watch
+                    </div>
+                  </div>
+                </Link>
                 <div className="p-4">
                   <h3 className="text-base text-brand-ivory">{reel.title}</h3>
-                  <div className="mt-2 text-xs text-brand-ivory/85">▶ {reel.views}</div>
                   <Link
                     href={reel.url}
                     target="_blank"
