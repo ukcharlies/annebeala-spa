@@ -112,7 +112,7 @@ export default function ReviewsPage() {
               >
                 <div className="relative aspect-4/5">
                   <iframe
-                    src={`${reel.url.replace(/\\/$/, "")}/embed`}
+                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
                     title={reel.title}
                     loading="lazy"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"

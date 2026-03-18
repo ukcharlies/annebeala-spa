@@ -138,7 +138,7 @@ export default function AboutPage() {
               <article key={reel.title} className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70">
                 <div className="relative aspect-[4/5]">
                   <iframe
-                    src={`${reel.url.replace(/\\/$/, "")}/embed`}
+                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
                     title={reel.title}
                     loading="lazy"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
