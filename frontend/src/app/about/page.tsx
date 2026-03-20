@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { InstagramReelCard } from "@/components/InstagramReelCard";
 import { branches, brandPillars, socialReels } from "@/lib/content";
+import { attachInstagramThumbnails } from "@/lib/instagram";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Discover Annebeala Spa, our philosophy, branches in Ikeja and VI, and our commitment to premium wellness care.",
+    "Discover Annebeala Spa, our philosophy, branches in Ikeja and Lekki, and our commitment to premium wellness care.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const reelsWithEmbeds = await attachInstagramThumbnails(
+    socialReels.slice(0, 3),
+  );
+
   return (
     <>
       <section className="section-shell pt-10">
@@ -34,7 +40,7 @@ export default function AboutPage() {
 
           <div className="relative min-h-[20rem]">
             <Image
-              src="/marketting.png"
+              src="/PHOTO-2026-03-01-11-52-35.jpg"
               alt="Annebeala Spa reception"
               fill
               priority
@@ -61,7 +67,7 @@ export default function AboutPage() {
               session, clients who value atmosphere, hygiene, consistency, and service excellence.
             </p>
             <p>
-              With branches in <strong>Ikeja</strong> and <strong>Victoria Island</strong>, Annebeala Spa
+              With branches in <strong>Ikeja</strong> and <strong>Lekki</strong>, Annebeala Spa
               serves Lagos clients who want trusted care close to where they live and work.
             </p>
           </div>
@@ -96,7 +102,7 @@ export default function AboutPage() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">Our Locations</p>
-            <h2 className="mt-3 text-4xl text-brand-charcoal">Serving Ikeja and Victoria Island</h2>
+            <h2 className="mt-3 text-4xl text-brand-charcoal">Serving Ikeja and Lekki</h2>
           </div>
           <Link href="/contact" className="btn-secondary">
             Contact Branches
@@ -133,32 +139,9 @@ export default function AboutPage() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {socialReels.slice(0, 3).map((reel) => (
-              <article key={reel.title} className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70">
-                <div className="relative aspect-[4/5]">
-                  <iframe
-                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
-                    title={reel.title}
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="h-full w-full border-0"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-base text-brand-ivory">{reel.title}</h3>
-                  <div className="mt-2 text-xs text-brand-ivory/85">▶ {reel.views}</div>
-                  <Link
-                    href={reel.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3 inline-block text-[0.65rem] uppercase tracking-[0.14em] text-brand-sage underline underline-offset-4"
-                  >
-                    Watch on Instagram
-                  </Link>
-                </div>
-              </article>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+            {reelsWithEmbeds.map((reel) => (
+              <InstagramReelCard key={reel.title} reel={reel} />
             ))}
           </div>
         </div>

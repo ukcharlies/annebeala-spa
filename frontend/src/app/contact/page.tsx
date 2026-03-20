@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import InquiryForm from "@/components/InquiryForm";
+import { branches } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -19,10 +20,26 @@ export default function ContactPage() {
             wellness goals.
           </p>
 
-          <div className="mt-8 space-y-2 text-sm text-brand-charcoal/80">
-            <p>Lagos, Nigeria</p>
-            <p>+234 800 000 0000</p>
-            <p>hello@annebealaspa.com</p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {branches.map((branch) => (
+              <article
+                key={branch.name}
+                className="rounded-2xl border border-brand-olive/20 bg-white/70 p-4 shadow-sm"
+              >
+                <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">
+                  {branch.area}
+                </p>
+                <h2 className="mt-2 text-lg text-brand-charcoal">
+                  {branch.name}
+                </h2>
+                <p className="mt-2 text-sm text-brand-charcoal/75">
+                  {branch.address}
+                </p>
+                <p className="mt-2 text-sm text-brand-charcoal/70">
+                  {branch.phone}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
 

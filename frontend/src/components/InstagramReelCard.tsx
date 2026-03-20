@@ -16,6 +16,9 @@ export function InstagramReelCard({
   className = "",
   aspectClassName = "aspect-[4/5] sm:aspect-[9/12]",
 }: InstagramReelCardProps) {
+  const isVideo =
+    reel.type === "video" || reel.src?.toLowerCase().endsWith(".mp4");
+
   return (
     <article
       className={`overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70 ${className}`}
@@ -49,7 +52,9 @@ export function InstagramReelCard({
             src={reel.thumbnailUrl}
             alt={reel.title}
             loading="lazy"
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+            className={`h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] ${
+              isVideo ? "opacity-100 group-hover:opacity-0" : ""
+            }`}
           />
         ) : (
           <Image
@@ -57,9 +62,25 @@ export function InstagramReelCard({
             alt={reel.title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition duration-300 group-hover:scale-[1.02]"
+            className={`object-cover transition duration-300 group-hover:scale-[1.02] ${
+              isVideo ? "opacity-100 group-hover:opacity-0" : ""
+            }`}
           />
         )}
+
+        {isVideo ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster={reel.thumbnailUrl}
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100"
+          >
+            <source src={reel.src} type="video/mp4" />
+          </video>
+        ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/60 via-transparent to-transparent" />
       </Link>
 

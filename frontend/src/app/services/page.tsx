@@ -118,7 +118,7 @@ export default function ServicesPage() {
           <h2 className="text-4xl">Ready to Book a Treatment?</h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-brand-ivory/80">
             Choose any service from our menu and schedule your appointment. Walk-ins
-            welcome at both our Ikeja and Victoria Island branches.
+            welcome at both our Ikeja and Lekki branches.
           </p>
           <div className="mt-7 flex flex-wrap gap-4">
             <Link href="/booking" className="btn-primary">

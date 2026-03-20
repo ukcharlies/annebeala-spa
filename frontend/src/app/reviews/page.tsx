@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { reviews, socialReels } from "@/lib/content";
+import { attachInstagramThumbnails } from "@/lib/instagram";
+import { InstagramReelCard } from "@/components/InstagramReelCard";
 
 export const metadata: Metadata = {
   title: "Reviews",
@@ -11,7 +13,11 @@ const averageRating = (
   reviews.reduce((total, item) => total + item.rating, 0) / reviews.length
 ).toFixed(1);
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  const reelsWithEmbeds = await attachInstagramThumbnails(
+    socialReels.slice(0, 3),
+  );
+
   return (
     <>
       <section className="section-shell pt-10">
@@ -104,37 +110,9 @@ export default function ReviewsPage() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {socialReels.slice(0, 3).map((reel) => (
-              <article
-                key={reel.title}
-                className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70"
-              >
-                <div className="relative aspect-4/5">
-                  <iframe
-                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
-                    title={reel.title}
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="h-full w-full border-0"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-base text-brand-ivory">{reel.title}</h3>
-                  <p className="mt-2 text-xs text-brand-sage">
-                    ▶ {reel.views} • ♥ {reel.likes}
-                  </p>
-                  <Link
-                    href={reel.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3 inline-block text-[0.65rem] uppercase tracking-[0.14em] text-brand-sage underline underline-offset-4"
-                  >
-                    Watch on Instagram
-                  </Link>
-                </div>
-              </article>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+            {reelsWithEmbeds.map((reel) => (
+              <InstagramReelCard key={reel.title} reel={reel} />
             ))}
           </div>
         </div>
