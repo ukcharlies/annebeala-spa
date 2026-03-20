@@ -26,8 +26,11 @@ export default function Footer() {
         <div>
           <h3 className="text-xl">Contact</h3>
           <ul className="mt-3 space-y-2 text-sm text-brand-ivory/80">
-            <li>Ikeja: 29C Remi Fani-Kayode, Ikeja GRA</li>
-            <li>VI: Victoria Island, Lagos</li>
+            <li>
+              Ikeja: 6 Sheraton Link Road, Opebi — inside Citiheigth Luxury Hotel, opposite The
+              Colossus Lagos
+            </li>
+            <li>Lekki: 4 Eru-Ifa Street, Ikate, Chisco, Lekki</li>
             <li>+234 708 846 5499</li>
           </ul>
         </div>

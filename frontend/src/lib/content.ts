@@ -79,7 +79,7 @@ export const serviceMenu: ServiceCategory[] = [
     title: "Pedicure & Manicure",
     description:
       "Pamper your hands and feet with our range of pedicure and manicure options for a polished finish.",
-    image: "/marketting.png",
+    image: "/PHOTO-2026-03-08-17-26-31.jpg",
     video: "/pedicure.mp4",
     items: [
       { name: "Classic Pedicure", price: "₦20,000" },
@@ -341,16 +341,17 @@ export const reviews = [
 export const branches = [
   {
     name: "Ikeja Branch",
-    area: "Ikeja GRA, Lagos",
-    address: "29C Remi Fani-Kayode Avenue, Ikeja GRA, Lagos",
+    area: "Opebi, Ikeja",
+    address:
+      "6 Sheraton Link Road, Opebi, Ikeja — inside Citiheigth Luxury Hotel, opposite The Colossus Lagos.",
     phone: "+234 708 846 5499",
     hours: "Mon - Sat: 9:30am - 7:00pm | Sun: 12:00pm - 7:00pm",
   },
   {
-    name: "VI Branch",
-    area: "Victoria Island, Lagos",
-    address: "Annebeala Spa, Victoria Island, Lagos",
-    phone: "+234 708 846 5499",
+    name: "Lekki Branch",
+    area: "Ikate, Lekki",
+    address: "4 Eru-Ifa Street, Ikate, Chisco, Lekki, Lagos",
+    phone: "0806 887 8676",
     hours: "Mon - Sat: 9:30am - 7:00pm | Sun: 12:00pm - 7:00pm",
   },
 ];
@@ -358,7 +359,7 @@ export const branches = [
 export const brandPillars = [
   {
     title: "Prime Locations",
-    description: "Easily accessible branches in Ikeja and Victoria Island.",
+    description: "Easily accessible branches in Ikeja and Lekki.",
   },
   {
     title: "Affordable Luxury",
@@ -406,7 +407,7 @@ export const socialReels = [
   {
     title: "Treatment Room Tour",
     type: "image",
-    src: "/marketting.png",
+    src: "/PHOTO-2026-03-08-17-26-31.jpg",
     views: "6.7k",
     likes: "680",
     url: "https://www.instagram.com/reel/DVYNXyNDJI4/",

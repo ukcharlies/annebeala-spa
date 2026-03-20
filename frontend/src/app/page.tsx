@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { InstagramReelCard } from "@/components/InstagramReelCard";
 import {
   branches,
   brandPillars,
@@ -9,6 +10,7 @@ import {
   serviceMenu,
   socialReels,
 } from "@/lib/content";
+import { attachInstagramThumbnails } from "@/lib/instagram";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -36,7 +38,9 @@ const homeServiceShowcase = serviceMenu.slice(0, 4);
 const homePackageShowcase = packageMenu.slice(0, 3);
 const homeReviewShowcase = reviews.slice(0, 4);
 
-export default function Home() {
+export default async function Home() {
+  const reelsWithEmbeds = await attachInstagramThumbnails(socialReels);
+
   return (
     <>
       <section className="section-shell pt-8 md:pt-12">
@@ -76,24 +80,28 @@ export default function Home() {
                 </Link>
               </div>
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                <article className="rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-4 backdrop-blur">
-                  <p className="text-xs uppercase tracking-[0.18em] text-brand-sage">
+              <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
+                <article className="min-w-0 rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-3 text-center backdrop-blur sm:p-4 sm:text-left">
+                  <p className="text-[0.6rem] uppercase tracking-[0.18em] text-brand-sage sm:text-xs">
                     Now Serving
                   </p>
-                  <p className="mt-2 text-xl text-brand-ivory">Ikeja + VI</p>
+                  <p className="mt-1 text-[0.8rem] leading-tight text-brand-ivory sm:mt-2 sm:text-xl">
+                    Ikeja + Lekki
+                  </p>
                 </article>
-                <article className="rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-4 backdrop-blur">
-                  <p className="text-xs uppercase tracking-[0.18em] text-brand-sage">
+                <article className="min-w-0 rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-3 text-center backdrop-blur sm:p-4 sm:text-left">
+                  <p className="text-[0.6rem] uppercase tracking-[0.18em] text-brand-sage sm:text-xs">
                     Open Daily
                   </p>
-                  <p className="mt-2 text-xl text-brand-ivory">9:30 — 7 pm</p>
+                  <p className="mt-1 text-[0.8rem] leading-tight text-brand-ivory sm:mt-2 sm:text-xl">
+                    9:30 — 7 pm
+                  </p>
                 </article>
-                <article className="rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-4 backdrop-blur">
-                  <p className="text-xs uppercase tracking-[0.18em] text-brand-sage">
+                <article className="min-w-0 rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-3 text-center backdrop-blur sm:p-4 sm:text-left">
+                  <p className="text-[0.6rem] uppercase tracking-[0.18em] text-brand-sage sm:text-xs">
                     Instagram
                   </p>
-                  <p className="mt-2 text-xl text-brand-ivory">
+                  <p className="mt-1 text-[0.75rem] leading-tight text-brand-ivory sm:mt-2 sm:text-xl">
                     @annebeala_spa
                   </p>
                 </article>
@@ -118,7 +126,7 @@ export default function Home() {
               {/* Top-right — image */}
               <article className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-brand-sage/35 shadow-2xl">
                 <Image
-                  src="/marketting.png"
+                  src="/PHOTO-2026-03-08-17-26-31.jpg"
                   alt="Spa treatment session"
                   fill
                   sizes="(max-width: 1024px) 45vw, 22vw"
@@ -301,38 +309,13 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {socialReels.map((reel) => (
-              <article
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+            {reelsWithEmbeds.map((reel, index) => (
+              <InstagramReelCard
                 key={reel.title}
-                className="overflow-hidden rounded-2xl border border-brand-sage/30 bg-brand-charcoal/70"
-              >
-                <div className="relative aspect-[9/12]">
-                  <iframe
-                    src={`${reel.url.endsWith("/") ? reel.url.slice(0, -1) : reel.url}/embed`}
-                    title={reel.title}
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="h-full w-full border-0"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg text-brand-ivory">{reel.title}</h3>
-                  <div className="mt-2 flex items-center gap-4 text-xs text-brand-ivory/85">
-                    <span>▶ {reel.views}</span>
-                    <span>♥ {reel.likes}</span>
-                  </div>
-                  <Link
-                    href={reel.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3 inline-block text-xs uppercase tracking-[0.14em] text-brand-sage underline underline-offset-4"
-                  >
-                    Watch on Instagram
-                  </Link>
-                </div>
-              </article>
+                reel={reel}
+                className={index > 2 ? "hidden sm:block" : ""}
+              />
             ))}
           </div>
         </div>
