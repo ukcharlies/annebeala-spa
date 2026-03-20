@@ -64,23 +64,23 @@ export default async function Home() {
               <p className="text-xs uppercase tracking-[0.26em] text-brand-sage">
                 Annebeala Spa • Lagos
               </p>
-              <h1 className="mt-4 max-w-3xl text-5xl leading-tight text-brand-ivory md:text-6xl">
+              <h1 className="mt-4 max-w-3xl text-4xl leading-[1.15] text-brand-ivory sm:text-5xl sm:leading-tight md:text-6xl">
                 Escape into Elegant Wellness and Visible Results.
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-7 text-brand-ivory/80 md:text-lg">
+              <p className="mt-5 max-w-2xl text-sm leading-6 text-brand-ivory/80 sm:mt-6 sm:text-base sm:leading-7 md:text-lg">
                 Luxury massages, facials, and body rituals curated to help you
                 unwind, glow, and feel your best in both body and mind.
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link href="/booking" className="btn-primary">
+              <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
+                <Link href="/booking" className="btn-primary w-full text-center sm:w-auto">
                   Book a Session
                 </Link>
-                <Link href="/about" className="btn-secondary-dark">
+                <Link href="/about" className="btn-secondary-dark w-full text-center sm:w-auto">
                   Discover Annebeala
                 </Link>
               </div>
 
-              <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3">
                 <article className="min-w-0 rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-3 text-center backdrop-blur sm:p-4 sm:text-left">
                   <p className="text-[0.6rem] uppercase tracking-[0.18em] text-brand-sage sm:text-xs">
                     Now Serving
@@ -126,10 +126,10 @@ export default async function Home() {
               {/* Top-right — image */}
               <article className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-brand-sage/35 shadow-2xl">
                 <Image
-                  src="/PHOTO-2026-03-08-17-26-31.jpg"
+                  src="/marketting.png"
                   alt="Spa treatment session"
                   fill
-                  sizes="(max-width: 1024px) 45vw, 22vw"
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 22vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/40 to-transparent" />
