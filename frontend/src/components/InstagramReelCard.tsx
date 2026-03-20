@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { InstagramReelWithThumbnail } from "@/lib/instagram";
+import {
+  getInstagramEmbedUrl,
+  type InstagramReelWithThumbnail,
+} from "@/lib/instagram";
 
 const HANDLE_LABEL = "@annebeala_spa";
 const BRAND_LABEL = "Annebeala Spa";
@@ -16,8 +19,7 @@ export function InstagramReelCard({
   className = "",
   aspectClassName = "aspect-[4/5] sm:aspect-[9/12]",
 }: InstagramReelCardProps) {
-  const isVideo =
-    reel.type === "video" || reel.src?.toLowerCase().endsWith(".mp4");
+  const embedUrl = getInstagramEmbedUrl(reel.url);
 
   return (
     <article
@@ -40,49 +42,48 @@ export function InstagramReelCard({
         </span>
       </div>
 
-      <Link
-        href={reel.url}
-        target="_blank"
-        rel="noreferrer"
-        className={`group relative block ${aspectClassName} overflow-hidden`}
-        aria-label={`Open ${reel.title} on Instagram`}
-      >
-        {reel.thumbnailUrl.startsWith("http") ? (
-          <img
-            src={reel.thumbnailUrl}
-            alt={reel.title}
+      {embedUrl ? (
+        <div
+          className={`relative ${aspectClassName} overflow-hidden`}
+          aria-label={`Instagram reel: ${reel.title}`}
+        >
+          <iframe
+            src={embedUrl}
+            title={reel.title}
             loading="lazy"
-            className={`h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] ${
-              isVideo ? "opacity-100 group-hover:opacity-0" : ""
-            }`}
+            className="absolute inset-0 h-full w-full"
+            allow="encrypted-media; picture-in-picture; clipboard-write"
+            referrerPolicy="strict-origin-when-cross-origin"
           />
-        ) : (
-          <Image
-            src={reel.thumbnailUrl}
-            alt={reel.title}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className={`object-cover transition duration-300 group-hover:scale-[1.02] ${
-              isVideo ? "opacity-100 group-hover:opacity-0" : ""
-            }`}
-          />
-        )}
-
-        {isVideo ? (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            poster={reel.thumbnailUrl}
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-500 group-hover:opacity-100"
-          >
-            <source src={reel.src} type="video/mp4" />
-          </video>
-        ) : null}
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/60 via-transparent to-transparent" />
-      </Link>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-charcoal/60 via-transparent to-transparent" />
+        </div>
+      ) : (
+        <Link
+          href={reel.url}
+          target="_blank"
+          rel="noreferrer"
+          className={`group relative block ${aspectClassName} overflow-hidden`}
+          aria-label={`Open ${reel.title} on Instagram`}
+        >
+          {reel.thumbnailUrl.startsWith("http") ? (
+            <img
+              src={reel.thumbnailUrl}
+              alt={reel.title}
+              loading="lazy"
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+            />
+          ) : (
+            <Image
+              src={reel.thumbnailUrl}
+              alt={reel.title}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover transition duration-300 group-hover:scale-[1.02]"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/60 via-transparent to-transparent" />
+        </Link>
+      )}
 
       <div className="flex items-center justify-between gap-3 px-3 py-2 sm:px-4">
         <p className="min-w-0 truncate text-[0.7rem] text-brand-ivory sm:text-sm">
