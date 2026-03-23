@@ -13,16 +13,25 @@ import {
 import { attachInstagramThumbnails } from "@/lib/instagram";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Luxury Spa in Lagos",
   description:
-    "Luxury spa and wellness experiences in Lagos with massage, facials, body rituals, and premium packages at Annebeala Spa.",
+    "Annebeala Spa is a luxury spa in Lagos offering massage therapy, facials, body rituals, and curated spa packages.",
+  openGraph: {
+    title: "Luxury Spa in Lagos | Annebeala Spa",
+    description:
+      "Unwind with premium massage therapy, facials, and body rituals at Annebeala Spa in Lagos.",
+    images: ["/marketting.png"],
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Spa",
+  "@type": "DaySpa",
   name: "Annebeala Spa",
-  image: "https://annebealaspa.com/og-image.jpg",
+  image: "https://annebealaspa.com/marketting.png",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Lagos",
@@ -43,6 +52,11 @@ export default async function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="section-shell pt-8 md:pt-12">
         <div className="relative overflow-hidden rounded-[2rem] border border-brand-olive/30 bg-brand-charcoal">
           <div className="absolute inset-0">
@@ -65,7 +79,7 @@ export default async function Home() {
                 Annebeala Spa • Lagos
               </p>
               <h1 className="mt-4 max-w-3xl text-4xl leading-[1.15] text-brand-ivory sm:text-5xl sm:leading-tight md:text-6xl">
-                Escape into Elegant Wellness and Visible Results.
+                Luxury Spa in Lagos for Elegant Wellness and Visible Results.
               </h1>
               <p className="mt-5 max-w-2xl text-sm leading-6 text-brand-ivory/80 sm:mt-6 sm:text-base sm:leading-7 md:text-lg">
                 Luxury massages, facials, and body rituals curated to help you

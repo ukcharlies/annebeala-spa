@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Book an Appointment | Annebeala Spa",
   description:
     "Book your spa session at Annebeala Spa Lagos. Select a branch, pick your treatment, and secure your slot with a small commitment deposit.",
+  alternates: {
+    canonical: "/booking",
+  },
 };
 
 export default function BookingPage() {

@@ -5,8 +5,12 @@ import { attachInstagramThumbnails } from "@/lib/instagram";
 import { InstagramReelCard } from "@/components/InstagramReelCard";
 
 export const metadata: Metadata = {
-  title: "Reviews",
-  description: "Read what clients say about their Annebeala Spa experience.",
+  title: "Annebeala Spa Reviews",
+  description:
+    "Read what clients say about their Annebeala Spa experience in Lagos.",
+  alternates: {
+    canonical: "/reviews",
+  },
 };
 
 const averageRating = (

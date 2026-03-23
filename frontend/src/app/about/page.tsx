@@ -6,9 +6,12 @@ import { branches, brandPillars, socialReels } from "@/lib/content";
 import { attachInstagramThumbnails } from "@/lib/instagram";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Annebeala Spa in Lagos",
   description:
-    "Discover Annebeala Spa, our philosophy, branches in Ikeja and Lekki, and our commitment to premium wellness care.",
+    "Discover Annebeala Spa, our Lagos wellness philosophy, branches in Ikeja and Lekki, and our commitment to premium care.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default async function AboutPage() {

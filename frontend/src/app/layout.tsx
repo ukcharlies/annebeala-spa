@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://annebealaspa.com"),
   title: {
     default: "Annebeala Spa | Luxury Spa in Lagos",
     template: "%s | Annebeala Spa",
@@ -33,9 +34,16 @@ export const metadata: Metadata = {
     description:
       "Luxury massage, facials, and wellness rituals tailored for deep relaxation.",
   },
-  alternates: {
-    canonical: "/",
-  },
+  robots:
+    process.env.VERCEL_ENV === "preview"
+      ? {
+          index: false,
+          follow: false,
+        }
+      : {
+          index: true,
+          follow: true,
+        },
 };
 
 export default function RootLayout({

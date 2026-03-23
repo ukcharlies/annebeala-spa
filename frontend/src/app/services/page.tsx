@@ -4,9 +4,12 @@ import Link from "next/link";
 import { serviceMenu } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Services | Annebeala Spa",
+  title: "Spa Services in Lagos | Annebeala Spa",
   description:
     "Explore our full treatment menu — massage therapy, body treatments, facials, pedicure & manicure, waxing, and teeth whitening at Annebeala Spa Lagos.",
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 export default function ServicesPage() {

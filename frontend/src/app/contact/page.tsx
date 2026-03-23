@@ -3,8 +3,12 @@ import InquiryForm from "@/components/InquiryForm";
 import { branches } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contact Annebeala Spa to ask questions or request a custom treatment plan.",
+  title: "Contact Annebeala Spa Lagos",
+  description:
+    "Contact Annebeala Spa in Lagos to ask questions or request a custom treatment plan.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {

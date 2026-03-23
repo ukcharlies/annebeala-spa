@@ -4,9 +4,12 @@ import Link from "next/link";
 import { packageMenu } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Packages | Annebeala Spa",
+  title: "Spa Packages in Lagos | Annebeala Spa",
   description:
     "Birthday, couples, friendship, and individual spa packages with full pricing at Annebeala Spa Lagos.",
+  alternates: {
+    canonical: "/packages",
+  },
 };
 
 export default function PackagesPage() {
