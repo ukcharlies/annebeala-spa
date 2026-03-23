@@ -100,7 +100,7 @@ export default async function Home() {
                     Now Serving
                   </p>
                   <p className="mt-1 text-[0.8rem] leading-tight text-brand-ivory sm:mt-2 sm:text-xl">
-                    Ikeja + Lekki
+                    Lekki + Ikeja
                   </p>
                 </article>
                 <article className="min-w-0 rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-3 text-center backdrop-blur sm:p-4 sm:text-left">
@@ -108,7 +108,7 @@ export default async function Home() {
                     Open Daily
                   </p>
                   <p className="mt-1 text-[0.8rem] leading-tight text-brand-ivory sm:mt-2 sm:text-xl">
-                    9:30 — 7 pm
+                    24 hrs round the clock
                   </p>
                 </article>
                 <article className="min-w-0 rounded-xl border border-brand-ivory/20 bg-brand-ivory/10 p-3 text-center backdrop-blur sm:p-4 sm:text-left">
