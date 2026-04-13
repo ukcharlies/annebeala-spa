@@ -11,36 +11,63 @@ import {
   socialReels,
 } from "@/lib/content";
 import { attachInstagramThumbnails } from "@/lib/instagram";
+import {
+  buildPageMetadata,
+  instagramUrl,
+  siteName,
+  toAbsoluteUrl,
+} from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Luxury Spa in Lagos",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Luxury Spa in Lagos, Nigeria",
   description:
-    "Annebeala Spa is a luxury spa in Lagos offering massage therapy, facials, body rituals, and curated spa packages.",
-  openGraph: {
-    title: "Luxury Spa in Lagos | Annebeala Spa",
-    description:
-      "Unwind with premium massage therapy, facials, and body rituals at Annebeala Spa in Lagos.",
-    images: ["/marketting.png"],
-  },
-  alternates: {
-    canonical: "/",
-  },
-};
+    "Annebeala Spa offers massage therapy, facials, waxing, body treatments, and curated spa packages in Ikeja and Lekki, Lagos.",
+  path: "/",
+  keywords: [
+    "day spa in Lagos",
+    "massage spa in Lekki",
+    "facial spa in Ikeja",
+    "wellness spa in Nigeria",
+  ],
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "DaySpa",
-  name: "Annebeala Spa",
-  image: "https://annebealaspa.com/marketting.png",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Lagos",
-    addressCountry: "NG",
-  },
-  url: "https://annebealaspa.com",
-  telephone: "+2347088465499",
-  sameAs: ["https://www.instagram.com/annebeala_spa?igsh=MW1icHh1dnUxOGVtYQ=="],
-  priceRange: "$$",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${toAbsoluteUrl("/")}#organization`,
+      name: siteName,
+      url: toAbsoluteUrl("/"),
+      logo: toAbsoluteUrl("/marketting.png"),
+      sameAs: [instagramUrl],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${toAbsoluteUrl("/")}#website`,
+      url: toAbsoluteUrl("/"),
+      name: siteName,
+      inLanguage: "en-NG",
+    },
+    ...branches.map((branch) => ({
+      "@type": "DaySpa",
+      "@id": `${toAbsoluteUrl("/")}#${branch.area.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      name: branch.name,
+      image: toAbsoluteUrl("/marketting.png"),
+      url: toAbsoluteUrl("/contact"),
+      telephone: branch.phone,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: branch.address,
+        addressLocality: "Lagos",
+        addressRegion: "Lagos",
+        addressCountry: "NG",
+      },
+      openingHours: "Mo-Su 00:00-23:59",
+      priceRange: "$$",
+      sameAs: [instagramUrl],
+    })),
+  ],
 };
 
 const homeServiceShowcase = serviceMenu.slice(0, 4);

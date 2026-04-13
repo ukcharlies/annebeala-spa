@@ -2,37 +2,50 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { defaultKeywords, siteName, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://annebealaspa.com"),
+  metadataBase: new URL(siteUrl),
+  applicationName: siteName,
   title: {
-    default: "Annebeala Spa | Luxury Spa in Lagos",
+    default: "Annebeala Spa | Luxury Spa in Lagos, Nigeria",
     template: "%s | Annebeala Spa",
   },
   description:
-    "Annebeala Spa is a luxury wellness spa in Lagos offering massage therapy, facials, body rituals, and curated spa packages.",
-  keywords: [
-    "Annebeala Spa",
-    "spa in Lagos",
-    "luxury spa",
-    "massage",
-    "facials",
-    "wellness packages",
-  ],
+    "Annebeala Spa is a luxury wellness spa in Lagos, Nigeria offering massage therapy, facials, body rituals, waxing, and curated spa packages.",
+  keywords: defaultKeywords,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Annebeala Spa | Luxury Spa in Lagos",
+    title: "Annebeala Spa | Luxury Spa in Lagos, Nigeria",
     description:
-      "Restore your body and calm your mind with premium spa experiences at Annebeala Spa.",
-    url: "https://annebealaspa.com",
-    siteName: "Annebeala Spa",
+      "Restore your body and calm your mind with premium spa experiences in Ikeja and Lekki at Annebeala Spa.",
+    url: siteUrl,
+    siteName,
     type: "website",
     locale: "en_NG",
+    images: ["/marketting.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Annebeala Spa | Luxury Spa in Lagos",
+    title: "Annebeala Spa | Luxury Spa in Lagos, Nigeria",
     description:
-      "Luxury massage, facials, and wellness rituals tailored for deep relaxation.",
+      "Luxury massage, facials, wellness rituals, and spa packages in Lagos.",
+    images: ["/marketting.png"],
+  },
+  category: "beauty",
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
+  other: {
+    "geo.region": "NG-LA",
+    "geo.placename": "Lagos",
   },
   robots:
     process.env.VERCEL_ENV === "preview"
