@@ -2,15 +2,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { serviceMenu } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Spa Services in Lagos | Annebeala Spa",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Spa Services in Lagos",
   description:
-    "Explore our full treatment menu — massage therapy, body treatments, facials, pedicure & manicure, waxing, and teeth whitening at Annebeala Spa Lagos.",
-  alternates: {
-    canonical: "/services",
-  },
-};
+    "Explore massage therapy, body treatments, facials, pedicure and manicure, waxing, and teeth whitening at Annebeala Spa Lagos.",
+  path: "/services",
+  keywords: [
+    "massage therapy in Lagos",
+    "facials in Lekki",
+    "waxing in Ikeja",
+    "pedicure and manicure in Lagos",
+  ],
+});
 
 export default function ServicesPage() {
   return (

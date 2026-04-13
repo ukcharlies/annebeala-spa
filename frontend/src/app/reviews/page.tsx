@@ -3,15 +3,14 @@ import Link from "next/link";
 import { reviews, socialReels } from "@/lib/content";
 import { attachInstagramThumbnails } from "@/lib/instagram";
 import { InstagramReelCard } from "@/components/InstagramReelCard";
+import { buildPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Annebeala Spa Reviews",
-  description:
-    "Read what clients say about their Annebeala Spa experience in Lagos.",
-  alternates: {
-    canonical: "/reviews",
-  },
-};
+  description: "Read what clients say about their Annebeala Spa experience in Lagos.",
+  path: "/reviews",
+  keywords: ["Annebeala Spa reviews", "best spa in Lagos reviews", "Lekki spa reviews"],
+});
 
 const averageRating = (
   reviews.reduce((total, item) => total + item.rating, 0) / reviews.length

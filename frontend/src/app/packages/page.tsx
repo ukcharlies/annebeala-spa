@@ -2,15 +2,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { packageMenu } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Spa Packages in Lagos | Annebeala Spa",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Spa Packages in Lagos",
   description:
     "Birthday, couples, friendship, and individual spa packages with full pricing at Annebeala Spa Lagos.",
-  alternates: {
-    canonical: "/packages",
-  },
-};
+  path: "/packages",
+  keywords: [
+    "spa packages in Lagos",
+    "couples spa in Lekki",
+    "birthday spa package in Lagos",
+    "bridal spa package in Ikeja",
+  ],
+});
 
 export default function PackagesPage() {
   return (
