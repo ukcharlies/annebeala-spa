@@ -1,0 +1,22 @@
+databases:
+  - name: annebeala-spa-db
+    plan: basic-256mb
+
+services:
+  - type: web
+    name: annebeala-spa-api
+    runtime: node
+    rootDir: backend
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: annebeala-spa-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: "true"
+      - key: FRONTEND_ORIGIN
+        value: "https://annebealaspa.com.ng,https://www.annebealaspa.com.ng"
