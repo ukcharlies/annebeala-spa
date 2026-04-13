@@ -340,18 +340,18 @@ export const reviews = [
 
 export const branches = [
   {
+    name: "Lekki Branch",
+    area: "IKATE, LEKKI",
+    address: "4 Eru-Ifa Street, Ikate, Chisco, Lekki, Lagos",
+    phone: "0806 887 8676",
+    hours: "24 hrs round the clock",
+  },
+  {
     name: "Ikeja Branch",
     area: "OPEBI, IKEJA",
     address:
       "6 Sheraton Link Road, Opebi, Ikeja — inside Citiheigth Luxury Hotel, opposite The Colossus Lagos.",
     phone: "+234 708 846 5499",
-    hours: "24 hrs round the clock",
-  },
-  {
-    name: "Lekki Branch",
-    area: "IKATE, LEKKI",
-    address: "4 Eru-Ifa Street, Ikate, Chisco, Lekki, Lagos",
-    phone: "0806 887 8676",
     hours: "24 hrs round the clock",
   },
 ];
@@ -451,8 +451,8 @@ export const bookingConfig = {
   /** Bank details for manual transfer */
   bankDetails: {
     bankName: "Opay",
-    accountName: "Annebeala Spa",
-    accountNumber: "6104411498",
+    accountName: "Annebeala Beauty and Spa",
+    accountNumber: "6142127943",
   },
   /** WhatsApp number (international format, no +) for receipt forwarding */
   whatsappNumber: "2347088465499",
