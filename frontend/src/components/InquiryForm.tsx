@@ -26,12 +26,13 @@ const initialState: FormState = {
 
 export default function InquiryForm({ formType }: InquiryFormProps) {
   const [form, setForm] = useState<FormState>(initialState);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
 
-  const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000").replace(
-    /\/$/,
-    "",
-  );
+  const apiBaseUrl = (
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000"
+  ).replace(/\/$/, "");
 
   const onChange = (field: keyof FormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -142,11 +143,14 @@ export default function InquiryForm({ formType }: InquiryFormProps) {
       </button>
 
       {status === "success" ? (
-        <p className="text-sm text-brand-olive">Your inquiry was sent. We will contact you shortly.</p>
+        <p className="text-sm text-brand-olive">
+          Your inquiry was sent. We will contact you shortly.
+        </p>
       ) : null}
       {status === "error" ? (
         <p className="text-sm text-red-700">
-          We could not submit right now. Please also send us a DM on Instagram: @annebeala_spa.
+          We could not submit right now. Please also send us a DM on Instagram:
+          @annebeala_spa.
         </p>
       ) : null}
     </form>

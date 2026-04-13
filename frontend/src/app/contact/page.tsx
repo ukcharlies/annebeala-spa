@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import InquiryForm from "@/components/InquiryForm";
 import { branches } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Contact Annebeala Spa Lagos",
   description:
-    "Contact Annebeala Spa in Lagos to ask questions or request a custom treatment plan.",
-  alternates: {
-    canonical: "/contact",
-  },
-};
+    "Contact Annebeala Spa in Lagos to ask questions, get branch directions, or request a custom treatment plan.",
+  path: "/contact",
+  keywords: [
+    "Annebeala Spa contact",
+    "spa in Ikeja address",
+    "spa in Lekki address",
+    "book spa appointment in Lagos",
+  ],
+});
 
 export default function ContactPage() {
   return (

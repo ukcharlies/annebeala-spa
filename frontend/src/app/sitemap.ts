@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
-
-const baseUrl = "https://annebealaspa.com";
+import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = ["", "/about", "/services", "/packages", "/reviews", "/contact", "/booking"];
+  const lastModified = new Date();
 
   return routes.map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    url: `${siteUrl}${route}`,
+    lastModified,
     changeFrequency: route === "" ? "weekly" : "monthly",
     priority: route === "" ? 1 : 0.7,
   }));

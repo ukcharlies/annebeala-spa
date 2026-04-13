@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import BookingWizard from "@/components/BookingWizard";
+import { buildPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Book an Appointment | Annebeala Spa",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Book a Spa Appointment in Lagos",
   description:
     "Book your spa session at Annebeala Spa Lagos. Select a branch, pick your treatment, and secure your slot with a small commitment deposit.",
-  alternates: {
-    canonical: "/booking",
-  },
-};
+  path: "/booking",
+  keywords: [
+    "book spa appointment in Lagos",
+    "massage booking in Lekki",
+    "facial appointment in Ikeja",
+  ],
+});
 
 export default function BookingPage() {
   return (

@@ -4,15 +4,15 @@ import Link from "next/link";
 import { InstagramReelCard } from "@/components/InstagramReelCard";
 import { branches, brandPillars, socialReels } from "@/lib/content";
 import { attachInstagramThumbnails } from "@/lib/instagram";
+import { buildPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About Annebeala Spa in Lagos",
   description:
     "Discover Annebeala Spa, our Lagos wellness philosophy, branches in Ikeja and Lekki, and our commitment to premium care.",
-  alternates: {
-    canonical: "/about",
-  },
-};
+  path: "/about",
+  keywords: ["about Annebeala Spa", "spa branches in Lagos", "wellness spa in Ikeja and Lekki"],
+});
 
 export default async function AboutPage() {
   const reelsWithEmbeds = await attachInstagramThumbnails(
