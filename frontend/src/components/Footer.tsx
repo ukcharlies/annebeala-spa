@@ -19,7 +19,8 @@ export default function Footer() {
             <h3 className="text-xl">Annebeala Spa</h3>
           </div>
           <p className="mt-3 text-sm text-brand-ivory/80">
-            Luxury wellness rituals designed to help you look radiant and feel restored.
+            Luxury wellness rituals designed to help you look radiant and feel
+            restored.
           </p>
         </div>
 
@@ -28,8 +29,8 @@ export default function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-brand-ivory/80">
             <li>Lekki: 4 Eru-Ifa Street, Ikate, Chisco, Lekki</li>
             <li>
-              Ikeja: 6 Sheraton Link Road, Opebi — inside Citiheigth Luxury Hotel, opposite The
-              Colossus Lagos
+              Ikeja: 6 Sheraton Link Road, Opebi — inside Citiheigth Luxury
+              Hotel, opposite The Colossus Lagos
             </li>
             <li>+234 708 846 5499</li>
           </ul>

@@ -31,7 +31,8 @@ export default function ServicesPage() {
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-7 text-brand-ivory/80">
             From deep tissue massage to hydra facials, body scrubs, waxing, and
-            teeth whitening — explore our complete menu with transparent pricing.
+            teeth whitening — explore our complete menu with transparent
+            pricing.
           </p>
         </div>
       </section>
@@ -125,8 +126,8 @@ export default function ServicesPage() {
         <div className="rounded-3xl border border-brand-olive/25 bg-brand-charcoal p-8 text-brand-ivory md:p-10">
           <h2 className="text-4xl">Ready to Book a Treatment?</h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-brand-ivory/80">
-            Choose any service from our menu and schedule your appointment. Walk-ins
-            welcome at both our Ikeja and Lekki branches.
+            Choose any service from our menu and schedule your appointment.
+            Walk-ins welcome at both our Ikeja and Lekki branches.
           </p>
           <div className="mt-7 flex flex-wrap gap-4">
             <Link href="/booking" className="btn-primary">

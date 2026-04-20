@@ -42,7 +42,10 @@ export default function BookingWizard() {
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState<BookingState>(initialState);
 
-  const update = <K extends keyof BookingState>(key: K, value: BookingState[K]) => {
+  const update = <K extends keyof BookingState>(
+    key: K,
+    value: BookingState[K],
+  ) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -58,7 +61,7 @@ export default function BookingWizard() {
         categoryId: cat.id,
         name: item.name,
         price: item.price,
-      }))
+      })),
     );
   }, []);
 
@@ -71,7 +74,7 @@ export default function BookingWizard() {
         name: pkg.name,
         price: pkg.price,
         includes: pkg.includes,
-      }))
+      })),
     );
   }, []);
 
@@ -105,7 +108,9 @@ export default function BookingWizard() {
   const renderStep1 = () => (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">Step 1 of 4</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">
+          Step 1 of 4
+        </p>
         <h2 className="mt-2 text-3xl text-brand-charcoal">Select a Branch</h2>
         <p className="mt-2 text-sm text-brand-charcoal/70">
           Choose the location most convenient for you.
@@ -124,7 +129,9 @@ export default function BookingWizard() {
                 : "border-brand-olive/30 bg-white hover:border-brand-forest"
             }`}
           >
-            <p className="text-lg font-semibold text-brand-charcoal">{b.name}</p>
+            <p className="text-lg font-semibold text-brand-charcoal">
+              {b.name}
+            </p>
             <p className="mt-1 text-sm text-brand-charcoal/70">{b.address}</p>
             <p className="mt-2 text-xs text-brand-olive">{b.phone}</p>
           </button>
@@ -146,8 +153,12 @@ export default function BookingWizard() {
   const renderStep2 = () => (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">Step 2 of 4</p>
-        <h2 className="mt-2 text-3xl text-brand-charcoal">Choose Your Treatment</h2>
+        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">
+          Step 2 of 4
+        </p>
+        <h2 className="mt-2 text-3xl text-brand-charcoal">
+          Choose Your Treatment
+        </h2>
         <p className="mt-2 text-sm text-brand-charcoal/70">
           Pick a single service or a curated package.
         </p>
@@ -202,16 +213,21 @@ export default function BookingWizard() {
                 update("treatmentPrice", s.price);
               }}
               className={`flex w-full items-center justify-between rounded-lg border p-3 text-left transition ${
-                form.treatmentName === s.name && form.treatmentCategory === s.category
+                form.treatmentName === s.name &&
+                form.treatmentCategory === s.category
                   ? "border-brand-forest bg-brand-sage/25"
                   : "border-transparent hover:bg-brand-ivory"
               }`}
             >
               <div>
-                <p className="text-sm font-medium text-brand-charcoal">{s.name}</p>
+                <p className="text-sm font-medium text-brand-charcoal">
+                  {s.name}
+                </p>
                 <p className="text-xs text-brand-olive">{s.category}</p>
               </div>
-              <span className="text-sm font-semibold text-brand-charcoal">{s.price}</span>
+              <span className="text-sm font-semibold text-brand-charcoal">
+                {s.price}
+              </span>
             </button>
           ))}
         </div>
@@ -230,16 +246,21 @@ export default function BookingWizard() {
                 update("treatmentPrice", p.price);
               }}
               className={`flex w-full items-center justify-between rounded-lg border p-3 text-left transition ${
-                form.treatmentName === p.name && form.treatmentCategory === p.category
+                form.treatmentName === p.name &&
+                form.treatmentCategory === p.category
                   ? "border-brand-forest bg-brand-sage/25"
                   : "border-transparent hover:bg-brand-ivory"
               }`}
             >
               <div>
-                <p className="text-sm font-medium text-brand-charcoal">{p.name}</p>
+                <p className="text-sm font-medium text-brand-charcoal">
+                  {p.name}
+                </p>
                 <p className="text-xs text-brand-olive">{p.category}</p>
               </div>
-              <span className="text-sm font-semibold text-brand-charcoal">{p.price}</span>
+              <span className="text-sm font-semibold text-brand-charcoal">
+                {p.price}
+              </span>
             </button>
           ))}
         </div>
@@ -265,7 +286,9 @@ export default function BookingWizard() {
   const renderStep3 = () => (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">Step 3 of 4</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">
+          Step 3 of 4
+        </p>
         <h2 className="mt-2 text-3xl text-brand-charcoal">Your Details</h2>
         <p className="mt-2 text-sm text-brand-charcoal/70">
           Tell us how to reach you and when you'd like to visit.
@@ -347,16 +370,23 @@ export default function BookingWizard() {
   const renderStep4 = () => (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">Step 4 of 4</p>
-        <h2 className="mt-2 text-3xl text-brand-charcoal">Commitment Payment</h2>
+        <p className="text-xs uppercase tracking-[0.18em] text-brand-olive">
+          Step 4 of 4
+        </p>
+        <h2 className="mt-2 text-3xl text-brand-charcoal">
+          Commitment Payment
+        </h2>
         <p className="mt-2 text-sm text-brand-charcoal/70">
-          Pay a small deposit to secure your slot. The balance is paid at the spa.
+          Pay a small deposit to secure your slot. The balance is paid at the
+          spa.
         </p>
       </div>
 
       {/* Booking summary */}
       <div className="rounded-2xl border border-brand-olive/25 bg-white p-5">
-        <p className="text-xs uppercase tracking-[0.14em] text-brand-olive">Booking Summary</p>
+        <p className="text-xs uppercase tracking-[0.14em] text-brand-olive">
+          Booking Summary
+        </p>
         <ul className="mt-3 space-y-2 text-sm text-brand-charcoal">
           <li className="flex justify-between">
             <span className="text-brand-charcoal/70">Branch</span>
@@ -376,13 +406,19 @@ export default function BookingWizard() {
           </li>
           <li className="flex justify-between">
             <span className="text-brand-charcoal/70">Preferred Date</span>
-            <span className="font-medium">{form.preferredDate || "Flexible"}</span>
+            <span className="font-medium">
+              {form.preferredDate || "Flexible"}
+            </span>
           </li>
         </ul>
         <div className="mt-4 border-t border-brand-olive/20 pt-4">
           <p className="flex justify-between text-base">
-            <span className="font-semibold text-brand-charcoal">Commitment Deposit</span>
-            <span className="font-bold text-brand-forest">{bookingConfig.commitmentFee}</span>
+            <span className="font-semibold text-brand-charcoal">
+              Commitment Deposit
+            </span>
+            <span className="font-bold text-brand-forest">
+              {bookingConfig.commitmentFee}
+            </span>
           </p>
           <p className="mt-1 text-xs text-brand-charcoal/60">
             This deposit is deducted from your total on the day of your visit.
@@ -398,15 +434,21 @@ export default function BookingWizard() {
         <ul className="mt-3 space-y-1.5 text-sm text-brand-charcoal">
           <li>
             <span className="text-brand-charcoal/70">Bank:</span>{" "}
-            <span className="font-medium">{bookingConfig.bankDetails.bankName}</span>
+            <span className="font-medium">
+              {bookingConfig.bankDetails.bankName}
+            </span>
           </li>
           <li>
             <span className="text-brand-charcoal/70">Account Name:</span>{" "}
-            <span className="font-medium">{bookingConfig.bankDetails.accountName}</span>
+            <span className="font-medium">
+              {bookingConfig.bankDetails.accountName}
+            </span>
           </li>
           <li>
             <span className="text-brand-charcoal/70">Account Number:</span>{" "}
-            <span className="font-semibold">{bookingConfig.bankDetails.accountNumber}</span>
+            <span className="font-semibold">
+              {bookingConfig.bankDetails.accountNumber}
+            </span>
           </li>
           <li>
             <span className="text-brand-charcoal/70">Amount:</span>{" "}
@@ -417,9 +459,14 @@ export default function BookingWizard() {
 
       {/* Instructions */}
       <div className="rounded-xl border border-brand-olive/20 bg-white p-4 text-sm text-brand-charcoal/80">
-        <p className="font-medium text-brand-charcoal">How to complete your booking:</p>
+        <p className="font-medium text-brand-charcoal">
+          How to complete your booking:
+        </p>
         <ol className="mt-2 list-inside list-decimal space-y-1">
-          <li>Transfer <strong>{bookingConfig.commitmentFee}</strong> to the account above.</li>
+          <li>
+            Transfer <strong>{bookingConfig.commitmentFee}</strong> to the
+            account above.
+          </li>
           <li>Take a screenshot of your payment receipt.</li>
           <li>Click the button below to send the receipt via WhatsApp.</li>
           <li>Our team will confirm your slot within 1 hour.</li>

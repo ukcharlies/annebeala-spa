@@ -113,10 +113,16 @@ export default async function Home() {
                 unwind, glow, and feel your best in both body and mind.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
-                <Link href="/booking" className="btn-primary w-full text-center sm:w-auto">
+                <Link
+                  href="/booking"
+                  className="btn-primary w-full text-center sm:w-auto"
+                >
                   Book a Session
                 </Link>
-                <Link href="/about" className="btn-secondary-dark w-full text-center sm:w-auto">
+                <Link
+                  href="/about"
+                  className="btn-secondary-dark w-full text-center sm:w-auto"
+                >
                   Discover Annebeala
                 </Link>
               </div>

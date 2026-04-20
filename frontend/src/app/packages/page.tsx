@@ -30,8 +30,9 @@ export default function PackagesPage() {
             Celebrate, Bond, and Glow — Pick Your Package
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-7 text-brand-ivory/80">
-            Whether it is your birthday, a date, a girls&apos; day out, or a solo
-            reset — we have a package that fits the occasion and your budget.
+            Whether it is your birthday, a date, a girls&apos; day out, or a
+            solo reset — we have a package that fits the occasion and your
+            budget.
           </p>
         </div>
       </section>
@@ -125,9 +126,9 @@ export default function PackagesPage() {
         <div className="rounded-3xl border border-brand-olive/25 bg-brand-charcoal p-8 text-brand-ivory md:p-10">
           <h2 className="text-4xl">Need a Custom Package?</h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-brand-ivory/80">
-            Planning a bridal prep, corporate wellness day, or a unique celebration?
-            Our team can create a treatment combination that matches your goals and
-            budget.
+            Planning a bridal prep, corporate wellness day, or a unique
+            celebration? Our team can create a treatment combination that
+            matches your goals and budget.
           </p>
           <div className="mt-7 flex flex-wrap gap-4">
             <Link href="/contact" className="btn-secondary-dark">

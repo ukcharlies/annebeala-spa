@@ -49,7 +49,11 @@ export default function Header() {
 
         <nav className="hidden items-center gap-6 text-sm uppercase tracking-wide text-brand-charcoal md:flex">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="transition hover:text-brand-olive">
+            <Link
+              key={item.href}
+              href={item.href}
+              className="transition hover:text-brand-olive"
+            >
               {item.label}
             </Link>
           ))}

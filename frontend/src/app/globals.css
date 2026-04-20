@@ -29,8 +29,16 @@ body {
 body {
   font-family: var(--font-body);
   background:
-    radial-gradient(circle at 8% 6%, rgba(143, 133, 125, 0.14) 0, transparent 35%),
-    radial-gradient(circle at 92% 94%, rgba(64, 158, 5, 0.1) 0, transparent 34%),
+    radial-gradient(
+      circle at 8% 6%,
+      rgba(143, 133, 125, 0.14) 0,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 92% 94%,
+      rgba(64, 158, 5, 0.1) 0,
+      transparent 34%
+    ),
     var(--color-brand-ivory);
 }
 
