@@ -40,9 +40,19 @@ export const metadata: Metadata = {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: [
+      {
+        url: "/PHOTO-2026-03-01-11-52-35.jpg",
+        type: "image/jpeg",
+      },
+    ],
+    shortcut: ["/PHOTO-2026-03-01-11-52-35.jpg"],
+    apple: [
+      {
+        url: "/PHOTO-2026-03-01-11-52-35.jpg",
+        type: "image/jpeg",
+      },
+    ],
   },
   other: {
     "geo.region": "NG-LA",
