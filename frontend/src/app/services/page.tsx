@@ -10,10 +10,14 @@ export const metadata: Metadata = buildPageMetadata({
     "Explore massage therapy, body treatments, facials, pedicure and manicure, waxing, and teeth whitening at Annebeala Spa Lagos.",
   path: "/services",
   keywords: [
+    "spa in Ikate",
+    "spa in Lekki",
+    "spa in Ikeja",
     "massage therapy in Lagos",
     "facials in Lekki",
     "waxing in Ikeja",
     "pedicure and manicure in Lagos",
+    "pedicure Lekki",
   ],
 });
 
@@ -49,6 +53,27 @@ export default function ServicesPage() {
               {cat.title}
             </a>
           ))}
+        </div>
+      </section>
+
+      <section className="section-shell mt-8">
+        <div className="rounded-2xl border border-brand-olive/20 bg-white/70 p-6 md:p-8">
+          <h2 className="text-3xl text-brand-charcoal">
+            Services Available in Ikate Lekki and Ikeja
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-brand-charcoal/80">
+            All listed treatments are available at Annebeala Spa branches in Ikate
+            Lekki and Opebi Ikeja, including pedicure and manicure, massage
+            therapy, facials, waxing, and body treatments.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/locations" className="btn-secondary">
+              View Branch Addresses
+            </Link>
+            <Link href="/booking" className="btn-secondary">
+              Book Any Service
+            </Link>
+          </div>
         </div>
       </section>
 

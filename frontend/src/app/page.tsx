@@ -25,11 +25,35 @@ export const metadata: Metadata = buildPageMetadata({
   path: "/",
   keywords: [
     "day spa in Lagos",
+    "spa in Ikate",
     "massage spa in Lekki",
+    "spa in Lekki",
+    "spa in Ikeja",
+    "pedicure Lekki",
+    "24 hours spa in Lekki",
     "facial spa in Ikeja",
     "wellness spa in Nigeria",
   ],
 });
+
+const parseNairaPrice = (value: string) => {
+  const numeric = value.replace(/[^\d]/g, "");
+  return numeric ? Number(numeric) : undefined;
+};
+
+const serviceOffers = serviceMenu.flatMap((category) =>
+  category.items.slice(0, 3).map((item) => ({
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name: item.name,
+      serviceType: category.title,
+    },
+    priceCurrency: "NGN",
+    price: parseNairaPrice(item.price),
+    availability: "https://schema.org/InStock",
+  })),
+);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -38,6 +62,7 @@ const jsonLd = {
       "@type": "Organization",
       "@id": `${toAbsoluteUrl("/")}#organization`,
       name: siteName,
+      alternateName: ["Annebeala Beauty and Spa", "Annebealas Beauty and Spa"],
       url: toAbsoluteUrl("/"),
       logo: toAbsoluteUrl("/marketting.png"),
       sameAs: [instagramUrl],
@@ -48,13 +73,18 @@ const jsonLd = {
       url: toAbsoluteUrl("/"),
       name: siteName,
       inLanguage: "en-NG",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${toAbsoluteUrl("/services")}?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
     },
     ...branches.map((branch) => ({
       "@type": "DaySpa",
       "@id": `${toAbsoluteUrl("/")}#${branch.area.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      name: branch.name,
+      name: `Annebeala Spa ${branch.name}`,
       image: toAbsoluteUrl("/marketting.png"),
-      url: toAbsoluteUrl("/contact"),
+      url: `${toAbsoluteUrl("/locations")}#${branch.slug}`,
       telephone: branch.phone,
       address: {
         "@type": "PostalAddress",
@@ -65,8 +95,41 @@ const jsonLd = {
       },
       openingHours: "Mo-Su 00:00-23:59",
       priceRange: "$$",
+      hasMap: branch.mapsUrl,
+      areaServed: ["Ikate", "Lekki", "Ikeja", "Lagos"],
+      makesOffer: serviceOffers,
       sameAs: [instagramUrl],
     })),
+    {
+      "@type": "FAQPage",
+      "@id": `${toAbsoluteUrl("/")}#faq`,
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Do you have a spa in Ikate, Lekki?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. Annebeala Spa has a branch at 4 Eru-Ifa Street, Ikate, Lekki, Lagos.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Is Annebeala Spa open 24 hours in Lekki?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. Both our Lekki and Ikeja branches operate 24 hours round the clock.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Can I book pedicure in Lekki online?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. You can book pedicure and manicure appointments online from the booking page.",
+          },
+        },
+      ],
+    },
   ],
 };
 
@@ -197,6 +260,34 @@ export default async function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/40 to-transparent" />
               </article>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-shell mt-10">
+        <div className="rounded-2xl border border-brand-olive/25 bg-brand-ivory p-6 md:p-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-brand-olive">
+            Popular Local Searches
+          </p>
+          <h2 className="mt-3 text-3xl text-brand-charcoal md:text-4xl">
+            Spa in Ikate, Lekki and Ikeja
+          </h2>
+          <p className="mt-4 max-w-4xl text-sm leading-7 text-brand-charcoal/80">
+            If you searched for <strong>spa in Ikate</strong>,{" "}
+            <strong>spa in Lekki</strong>, <strong>spa near me</strong>,{" "}
+            <strong>pedicure Lekki</strong>, or <strong>24 hours spa in Lekki</strong>,
+            Annebeala Spa is available at both Ikate Lekki and Opebi Ikeja branches.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/locations" className="btn-secondary">
+              View Spa Locations
+            </Link>
+            <Link href="/services#pedicure-manicure" className="btn-secondary">
+              Pedicure & Manicure
+            </Link>
+            <Link href="/booking" className="btn-secondary">
+              Book an Appointment
+            </Link>
           </div>
         </div>
       </section>
@@ -482,11 +573,6 @@ export default async function Home() {
           ))}
         </div>
       </section>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
     </>
   );
 }

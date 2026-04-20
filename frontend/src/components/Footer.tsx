@@ -38,6 +38,14 @@ export default function Footer() {
 
         <div>
           <h3 className="text-xl">Follow</h3>
+          <div className="mt-3">
+            <Link
+              href="/locations"
+              className="text-sm text-brand-ivory/80 underline decoration-brand-forest/80 underline-offset-4 transition hover:text-brand-ivory"
+            >
+              Spa Locations (Ikate Lekki & Ikeja)
+            </Link>
+          </div>
           <Link
             href="https://www.instagram.com/annebeala_spa?igsh=MW1icHh1dnUxOGVtYQ=="
             target="_blank"

@@ -341,18 +341,24 @@ export const reviews = [
 export const branches = [
   {
     name: "Lekki Branch",
+    slug: "ikate-lekki",
     area: "IKATE, LEKKI",
     address: "4 Eru-Ifa Street, Ikate, Chisco, Lekki, Lagos",
     phone: "0806 887 8676",
     hours: "24 hrs round the clock",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=4+Eru-Ifa+Street%2C+Ikate%2C+Lekki%2C+Lagos",
   },
   {
     name: "Ikeja Branch",
+    slug: "opebi-ikeja",
     area: "OPEBI, IKEJA",
     address:
       "6 Sheraton Link Road, Opebi, Ikeja — inside Citiheigth Luxury Hotel, opposite The Colossus Lagos.",
     phone: "+234 708 846 5499",
     hours: "24 hrs round the clock",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=6+Sheraton+Link+Road%2C+Opebi%2C+Ikeja%2C+Lagos",
   },
 ];
 

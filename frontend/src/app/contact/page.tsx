@@ -9,9 +9,12 @@ export const metadata: Metadata = buildPageMetadata({
     "Contact Annebeala Spa in Lagos to ask questions, get branch directions, or request a custom treatment plan.",
   path: "/contact",
   keywords: [
+    "spa in Ikate contact",
+    "spa in Lekki contact",
     "Annebeala Spa contact",
     "spa in Ikeja address",
     "spa in Lekki address",
+    "24 hours spa in Lekki",
     "book spa appointment in Lagos",
   ],
 });
