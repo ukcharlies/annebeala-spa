@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     "Annebeala Spa is a luxury wellness spa in Lagos, Nigeria offering massage therapy, facials, body rituals, waxing, and curated spa packages.",
   keywords: defaultKeywords,
   alternates: {
-    canonical: "/",
+    canonical: siteUrl,
   },
   openGraph: {
     title: "Annebeala Spa | Luxury Spa in Lagos, Nigeria",
@@ -77,6 +78,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Google tag (gtag.js) */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18111411746"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-18111411746');
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-brand-ivory text-brand-charcoal antialiased">
         <Header />
         <main className="flex min-h-[calc(100vh-10rem)] flex-col">{children}</main>
