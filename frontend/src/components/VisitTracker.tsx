@@ -103,7 +103,7 @@ const sendPayload = (payload: VisitPayload) => {
   }
 
   const body = JSON.stringify(payload);
-  const endpoint = `${apiBaseUrl}/analytics/visit`;
+  const endpoint = `${apiBaseUrl}/traffic/collect`;
 
   if (navigator.sendBeacon) {
     const blob = new Blob([body], { type: "application/json" });

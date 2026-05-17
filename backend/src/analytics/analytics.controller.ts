@@ -55,3 +55,32 @@ export class AnalyticsController {
     }
   }
 }
+
+@Controller('traffic')
+export class TrafficController {
+  constructor(private readonly analyticsService: AnalyticsService) {}
+
+  @Post('collect')
+  @HttpCode(204)
+  async collect(
+    @Body() payload: CreateVisitDto,
+    @Req() request: Request,
+    @Headers('cf-connecting-ip') cloudflareIp?: string,
+    @Headers('x-real-ip') realIp?: string,
+    @Headers('x-forwarded-for') forwardedFor?: string,
+    @Headers('user-agent') userAgent?: string,
+  ) {
+    const ipAddress =
+      this.analyticsService.normalizeIpAddress(cloudflareIp) ??
+      this.analyticsService.normalizeIpAddress(realIp) ??
+      this.analyticsService.normalizeIpAddress(forwardedFor) ??
+      this.analyticsService.normalizeIpAddress(request.ip) ??
+      this.analyticsService.normalizeIpAddress(request.socket.remoteAddress);
+
+    await this.analyticsService.recordVisit(
+      payload,
+      ipAddress,
+      userAgent ?? null,
+    );
+  }
+}

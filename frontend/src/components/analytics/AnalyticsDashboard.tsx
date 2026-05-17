@@ -134,7 +134,9 @@ export default function AnalyticsDashboard() {
   const [rememberToken, setRememberToken] = useState(false);
   const [summary, setSummary] = useState<AnalyticsSummary>(emptySummary);
   const [loading, setLoading] = useState(false);
+  const [testing, setTesting] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [query, setQuery] = useState("");
 
   const filteredVisits = useMemo(() => {
@@ -216,6 +218,7 @@ export default function AnalyticsDashboard() {
 
     setLoading(true);
     setError("");
+    setNotice("");
 
     try {
       const response = await fetch(`${apiBaseUrl}/analytics/summary`, {
@@ -271,6 +274,52 @@ export default function AnalyticsDashboard() {
     setToken("");
     setDraftToken("");
     setSummary(emptySummary);
+  };
+
+  const sendTestEvent = async () => {
+    if (!apiBaseUrl) {
+      setError("NEXT_PUBLIC_API_BASE_URL is not configured for this build.");
+      return;
+    }
+
+    setTesting(true);
+    setError("");
+    setNotice("");
+
+    try {
+      const response = await fetch(`${apiBaseUrl}/traffic/collect`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          event: "page_view",
+          visitorId: "dashboard-test-visitor",
+          sessionId: `dashboard-test-${Date.now()}`,
+          path: "/ops/traffic-test",
+          url: window.location.href,
+          title: "Dashboard Test Event",
+          referrer: "dashboard",
+          screen: `${window.screen.width}x${window.screen.height}`,
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
+          language: navigator.language,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Test event failed with HTTP ${response.status}.`);
+      }
+
+      if (token) {
+        await fetchSummary(token);
+      }
+      setNotice("Test event accepted. It should now appear in recent traffic.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to send test event.");
+    } finally {
+      setTesting(false);
+    }
   };
 
   return (
@@ -335,6 +384,12 @@ export default function AnalyticsDashboard() {
         </div>
       ) : null}
 
+      {notice ? (
+        <div className="mb-8 rounded-md border border-brand-forest/25 bg-brand-sage/30 px-4 py-3 text-sm text-brand-charcoal">
+          {notice}
+        </div>
+      ) : null}
+
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-brand-olive">
           Last event: {formatDateTime(summary.lastSeen)}
@@ -347,6 +402,15 @@ export default function AnalyticsDashboard() {
         >
           <RefreshCcw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           Refresh
+        </button>
+        <button
+          type="button"
+          onClick={() => void sendTestEvent()}
+          disabled={testing}
+          className="inline-flex items-center gap-2 rounded-full border border-brand-olive/35 bg-white px-4 py-2 text-sm font-semibold text-brand-charcoal transition hover:border-brand-forest disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Activity className={`h-4 w-4 ${testing ? "animate-pulse" : ""}`} />
+          Send test event
         </button>
       </div>
 
