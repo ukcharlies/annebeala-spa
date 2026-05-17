@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import VisitTracker from "@/components/VisitTracker";
 import {
   serverFeeUnpaid,
   siteUnavailable,
@@ -135,7 +135,7 @@ export default function RootLayout({
           {pageContent}
         </main>
         {siteUnavailable ? null : <Footer />}
-        {siteUnavailable ? null : <Analytics />}
+        {siteUnavailable ? null : <VisitTracker />}
       </body>
     </html>
   );
