@@ -20,3 +20,5 @@ services:
         value: "true"
       - key: FRONTEND_ORIGIN
         value: "https://annebealaspa.com.ng,https://www.annebealaspa.com.ng"
+      - key: ANALYTICS_ADMIN_TOKEN
+        sync: false
