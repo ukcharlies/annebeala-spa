@@ -30,6 +30,7 @@ const unavailableReason = serverFeeUnpaid
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: siteName,
+  manifest: "/manifest.webmanifest",
   title: siteUnavailable
     ? "Page Not Found"
     : {
