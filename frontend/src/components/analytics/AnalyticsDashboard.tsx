@@ -19,6 +19,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
 const tokenStorageKey = "annebeala.analytics.adminToken";
+const trackerDebugKey = "annebeala.analytics.lastAttempt";
 
 type Metric = {
   label: string;
@@ -79,6 +80,15 @@ type AnalyticsSummary = {
   recentVisits: Visit[];
 };
 
+type TrackerDebug = {
+  status: string;
+  detail?: string;
+  event: string;
+  path: string;
+  endpoint: string;
+  at: string;
+};
+
 const emptySummary: AnalyticsSummary = {
   totalEvents: 0,
   totalViews: 0,
@@ -137,6 +147,7 @@ export default function AnalyticsDashboard() {
   const [testing, setTesting] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [trackerDebug, setTrackerDebug] = useState<TrackerDebug | null>(null);
   const [query, setQuery] = useState("");
 
   const filteredVisits = useMemo(() => {
@@ -245,6 +256,20 @@ export default function AnalyticsDashboard() {
   };
 
   useEffect(() => {
+    const readTrackerDebug = () => {
+      const rawDebug = window.sessionStorage.getItem(trackerDebugKey);
+      if (!rawDebug) {
+        setTrackerDebug(null);
+        return;
+      }
+
+      try {
+        setTrackerDebug(JSON.parse(rawDebug));
+      } catch {
+        setTrackerDebug(null);
+      }
+    };
+
     const savedToken = window.localStorage.getItem(tokenStorageKey);
     if (savedToken) {
       setToken(savedToken);
@@ -252,6 +277,15 @@ export default function AnalyticsDashboard() {
       setRememberToken(true);
       void fetchSummary(savedToken);
     }
+    readTrackerDebug();
+
+    window.addEventListener("focus", readTrackerDebug);
+    window.addEventListener("annebeala:analytics", readTrackerDebug);
+
+    return () => {
+      window.removeEventListener("focus", readTrackerDebug);
+      window.removeEventListener("annebeala:analytics", readTrackerDebug);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -389,6 +423,40 @@ export default function AnalyticsDashboard() {
           {notice}
         </div>
       ) : null}
+
+      <div className="mb-8 rounded-lg border border-brand-olive/25 bg-white p-4 text-sm shadow-sm">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-olive">
+              Browser tracker diagnostic
+            </p>
+            <p className="mt-2 text-brand-olive">
+              {trackerDebug
+                ? `${trackerDebug.status} ${trackerDebug.event} for ${trackerDebug.path} at ${formatDateTime(trackerDebug.at)}`
+                : "No automatic tracker attempt has been seen in this browser tab yet."}
+            </p>
+            {trackerDebug?.detail ? (
+              <p className="mt-1 text-xs text-brand-olive">
+                Detail: {trackerDebug.detail}
+              </p>
+            ) : null}
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const rawDebug = window.sessionStorage.getItem(trackerDebugKey);
+              try {
+                setTrackerDebug(rawDebug ? JSON.parse(rawDebug) : null);
+              } catch {
+                setTrackerDebug(null);
+              }
+            }}
+            className="inline-flex items-center justify-center rounded-full border border-brand-olive/35 bg-white px-4 py-2 text-sm font-semibold text-brand-charcoal transition hover:border-brand-forest"
+          >
+            Check tracker state
+          </button>
+        </div>
+      </div>
 
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-brand-olive">
