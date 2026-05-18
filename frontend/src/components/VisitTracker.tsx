@@ -9,6 +9,8 @@ const sessionKey = "annebeala.analytics.session";
 const sessionStartedKey = "annebeala.analytics.sessionStarted";
 const debugKey = "annebeala.analytics.lastAttempt";
 const sessionWindowMs = 30 * 60 * 1000;
+const minimumUsefulEngagementMs = 1000;
+const engagementHeartbeatMs = 15 * 1000;
 
 type AnalyticsEvent = "page_view" | "engagement";
 
@@ -264,9 +266,11 @@ const trackPageView = ({
 
   const visitorId = getOrCreateVisitorId();
   const sessionId = getOrCreateSessionId();
-  const startedAt = Date.now();
+  let visibleStartedAt =
+    document.visibilityState === "visible" ? Date.now() : null;
+  let activeDurationMs = 0;
+  let lastSentDurationMs = 0;
   let maxScrollDepth = getScrollDepth();
-  let engagementSent = false;
   const basePayload = makeBasePayload({ visitorId, sessionId, path });
   const pageViewPayload: VisitPayload = {
     event: "page_view",
@@ -280,39 +284,85 @@ const trackPageView = ({
     maxScrollDepth = Math.max(maxScrollDepth, getScrollDepth());
   };
 
-  const sendEngagement = () => {
-    if (engagementSent) {
+  const getActiveDurationMs = () =>
+    activeDurationMs +
+    (visibleStartedAt === null ? 0 : Date.now() - visibleStartedAt);
+
+  const pauseActiveTimer = () => {
+    if (visibleStartedAt === null) {
       return;
     }
 
-    engagementSent = true;
+    activeDurationMs += Date.now() - visibleStartedAt;
+    visibleStartedAt = null;
+  };
+
+  const resumeActiveTimer = () => {
+    if (visibleStartedAt !== null) {
+      return;
+    }
+
+    visibleStartedAt = Date.now();
+  };
+
+  const sendEngagement = ({ preferBeacon = false } = {}) => {
     updateScrollDepth();
+
+    const durationMs = Math.round(getActiveDurationMs());
+    if (
+      durationMs < minimumUsefulEngagementMs ||
+      durationMs <= lastSentDurationMs
+    ) {
+      return;
+    }
+
+    lastSentDurationMs = durationMs;
 
     const engagementPayload: VisitPayload = {
       event: "engagement",
       ...basePayload,
-      durationMs: Math.max(0, Date.now() - startedAt),
+      durationMs,
       maxScrollDepth,
     };
 
     dispatchTrackerEvent(engagementPayload);
-    sendPayloadOnExit(engagementPayload);
+    if (preferBeacon) {
+      sendPayloadOnExit(engagementPayload);
+      return;
+    }
+
+    sendPayload(engagementPayload);
   };
 
   const handleVisibilityChange = () => {
     if (document.visibilityState === "hidden") {
-      sendEngagement();
+      pauseActiveTimer();
+      sendEngagement({ preferBeacon: true });
+      return;
     }
+
+    resumeActiveTimer();
   };
 
+  const handlePageHide = () => {
+    sendEngagement({ preferBeacon: true });
+  };
+
+  const heartbeat = window.setInterval(() => {
+    if (document.visibilityState === "visible") {
+      sendEngagement();
+    }
+  }, engagementHeartbeatMs);
+
   window.addEventListener("scroll", updateScrollDepth, { passive: true });
-  window.addEventListener("pagehide", sendEngagement);
+  window.addEventListener("pagehide", handlePageHide);
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
   return () => {
-    sendEngagement();
+    sendEngagement({ preferBeacon: true });
+    window.clearInterval(heartbeat);
     window.removeEventListener("scroll", updateScrollDepth);
-    window.removeEventListener("pagehide", sendEngagement);
+    window.removeEventListener("pagehide", handlePageHide);
     document.removeEventListener("visibilitychange", handleVisibilityChange);
   };
 };

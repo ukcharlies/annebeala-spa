@@ -3,7 +3,6 @@
 import {
   Activity,
   BarChart3,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Clock3,
@@ -20,7 +19,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import { FormEvent, Fragment, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
 const tokenStorageKey = "annebeala.analytics.adminToken";
@@ -134,7 +133,8 @@ const emptySummary: AnalyticsSummary = {
   recentVisits: [],
 };
 
-const formatNumber = (value: number) => new Intl.NumberFormat("en-NG").format(value);
+const formatNumber = (value: number) =>
+  new Intl.NumberFormat("en-NG").format(value);
 
 const formatDateTime = (value: string | null) => {
   if (!value) {
@@ -181,7 +181,7 @@ const getUniqueOptions = (values: string[]) =>
     a.localeCompare(b),
   );
 
-const getMetricInsight = (kind: MetricInsightKind, item: Metric): Insight => {
+const getMetricInsight = (kind: MetricInsightKind): Insight => {
   const shared = {
     pages: {
       title: "Page detail",
@@ -243,7 +243,7 @@ const getMetricInsight = (kind: MetricInsightKind, item: Metric): Insight => {
 
   return {
     ...insight,
-    title: `${insight.title}: ${item.label}`,
+    title: insight.title,
   };
 };
 
@@ -326,8 +326,9 @@ export default function AnalyticsDashboard() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [trackerDebug, setTrackerDebug] = useState<TrackerDebug | null>(null);
-  const [trafficFilters, setTrafficFilters] =
-    useState<TrafficFilters>(initialTrafficFilters);
+  const [trafficFilters, setTrafficFilters] = useState<TrafficFilters>(
+    initialTrafficFilters,
+  );
   const [trafficPage, setTrafficPage] = useState(1);
   const [trafficPageSize, setTrafficPageSize] = useState(10);
 
@@ -362,7 +363,8 @@ export default function AnalyticsDashboard() {
 
       return (
         matchesSearch &&
-        (trafficFilters.event === "all" || visit.event === trafficFilters.event) &&
+        (trafficFilters.event === "all" ||
+          visit.event === trafficFilters.event) &&
         (trafficFilters.device === "all" ||
           visit.deviceType === trafficFilters.device) &&
         (trafficFilters.campaign === "all" ||
@@ -373,7 +375,9 @@ export default function AnalyticsDashboard() {
 
   const trafficFilterOptions = useMemo(
     () => ({
-      devices: getUniqueOptions(summary.recentVisits.map((visit) => visit.deviceType)),
+      devices: getUniqueOptions(
+        summary.recentVisits.map((visit) => visit.deviceType),
+      ),
       campaigns: getUniqueOptions(summary.recentVisits.map(getCampaignLabel)),
     }),
     [summary.recentVisits],
@@ -431,7 +435,9 @@ export default function AnalyticsDashboard() {
     )?.views;
     const usefulViews = (bookingViews ?? 0) + (contactViews ?? 0);
     const rate =
-      summary.totalViews > 0 ? Math.round((usefulViews / summary.totalViews) * 100) : 0;
+      summary.totalViews > 0
+        ? Math.round((usefulViews / summary.totalViews) * 100)
+        : 0;
 
     return { usefulViews, rate };
   }, [summary.topPages, summary.totalViews]);
@@ -440,25 +446,37 @@ export default function AnalyticsDashboard() {
     const notes: string[] = [];
 
     if (summary.totalViews === 0) {
-      notes.push("Deploy the updated frontend and visit the public site once to start collecting page views.");
-      notes.push("Keep this page open after traffic arrives; the dashboard refreshes from the backend token only.");
+      notes.push(
+        "Deploy the updated frontend and visit the public site once to start collecting page views.",
+      );
+      notes.push(
+        "Keep this page open after traffic arrives; the dashboard refreshes from the backend token only.",
+      );
       return notes;
     }
 
     if (summary.avgScrollDepth > 0 && summary.avgScrollDepth < 45) {
-      notes.push("Average scroll depth is low. Move the booking call-to-action higher on high-traffic pages.");
+      notes.push(
+        "Average scroll depth is low. Move the booking call-to-action higher on high-traffic pages.",
+      );
     }
 
     if (summary.avgDurationMs > 0 && summary.avgDurationMs < 15000) {
-      notes.push("Average engagement time is short. Tighten first-screen copy and make branch/contact details easier to scan.");
+      notes.push(
+        "Average engagement time is short. Tighten first-screen copy and make branch/contact details easier to scan.",
+      );
     }
 
     if (conversionSignals.rate < 12) {
-      notes.push("Booking/contact intent is below target. Add stronger booking prompts from service and package pages.");
+      notes.push(
+        "Booking/contact intent is below target. Add stronger booking prompts from service and package pages.",
+      );
     }
 
     if (summary.referrers[0]?.label === "Direct / unknown") {
-      notes.push("Most traffic is direct or unattributed. Use UTM links on Instagram, WhatsApp, and Google Business Profile.");
+      notes.push(
+        "Most traffic is direct or unattributed. Use UTM links on Instagram, WhatsApp, and Google Business Profile.",
+      );
     }
 
     return notes.slice(0, 4);
@@ -497,7 +515,9 @@ export default function AnalyticsDashboard() {
 
       setSummary(await response.json());
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to load analytics.");
+      setError(
+        err instanceof Error ? err.message : "Unable to load analytics.",
+      );
     } finally {
       setLoading(false);
     }
@@ -598,7 +618,9 @@ export default function AnalyticsDashboard() {
       }
       setNotice("Test event accepted. It should now appear in recent traffic.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to send test event.");
+      setError(
+        err instanceof Error ? err.message : "Unable to send test event.",
+      );
     } finally {
       setTesting(false);
     }
@@ -832,7 +854,9 @@ export default function AnalyticsDashboard() {
             </span>
             <input
               value={trafficFilters.query}
-              onChange={(event) => updateTrafficFilter("query", event.target.value)}
+              onChange={(event) =>
+                updateTrafficFilter("query", event.target.value)
+              }
               placeholder="Path, IP, browser, campaign"
               className="w-full rounded-md border border-brand-olive/25 bg-white px-3 py-2 text-sm outline-none transition focus:border-brand-forest focus:ring-2 focus:ring-brand-forest/15"
             />
@@ -898,7 +922,8 @@ export default function AnalyticsDashboard() {
 
         <div className="mb-4 flex flex-col gap-2 text-sm text-brand-olive sm:flex-row sm:items-center sm:justify-between">
           <p>
-            Showing {trafficStart}-{trafficEnd} of {formatNumber(filteredVisits.length)} visits
+            Showing {trafficStart}-{trafficEnd} of{" "}
+            {formatNumber(filteredVisits.length)} visits
           </p>
           <PaginationControls
             page={currentTrafficPage}
@@ -932,28 +957,20 @@ function StatCard({
   value: string;
   insight: Insight;
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div className="rounded-lg border border-brand-olive/25 bg-white p-5 shadow-sm">
-      <button
-        type="button"
-        onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-center justify-between gap-3 text-left"
-        aria-expanded={open}
-      >
+    <div className="relative rounded-lg border border-brand-olive/25 bg-white p-5 shadow-sm">
+      <div className="flex w-full items-center justify-between gap-3">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-olive">
           {label}
         </p>
         <span className="flex items-center gap-2 text-brand-forest">
-          <Info className="h-4 w-4" />
+          <InfoPopover insight={insight} />
           <Icon className="h-5 w-5" />
         </span>
-      </button>
+      </div>
       <p className="mt-4 text-3xl font-semibold tracking-normal text-brand-charcoal">
         {value}
       </p>
-      {open ? <InsightBox insight={insight} className="mt-4" /> : null}
     </div>
   );
 }
@@ -970,7 +987,9 @@ function Panel({
   className?: string;
 }) {
   return (
-    <section className={`rounded-lg border border-brand-olive/25 bg-white p-5 shadow-sm ${className}`}>
+    <section
+      className={`rounded-lg border border-brand-olive/25 bg-white p-5 shadow-sm ${className}`}
+    >
       <div className="mb-5 flex items-center justify-between gap-3">
         <h2 className="font-body text-base font-semibold tracking-normal text-brand-charcoal">
           {title}
@@ -991,16 +1010,9 @@ function MiniMetric({
   value: string;
   insight: Insight;
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div className="rounded-md border border-brand-olive/20 bg-white px-3 py-3">
-      <button
-        type="button"
-        onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-start justify-between gap-2 text-left"
-        aria-expanded={open}
-      >
+    <div className="relative rounded-md border border-brand-olive/20 bg-white px-3 py-3">
+      <div className="flex w-full items-start justify-between gap-2">
         <span>
           <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand-olive">
             {label}
@@ -1009,9 +1021,8 @@ function MiniMetric({
             {value}
           </span>
         </span>
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand-forest" />
-      </button>
-      {open ? <InsightBox insight={insight} className="mt-3" compact /> : null}
+        <InfoPopover insight={insight} compact />
+      </div>
     </div>
   );
 }
@@ -1027,7 +1038,10 @@ function DailyChart({ days }: { days: DailyMetric[] }) {
   return (
     <div className="flex h-64 items-end gap-2 border-b border-brand-olive/20 pb-3">
       {orderedDays.map((day) => (
-        <div key={day.day} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+        <div
+          key={day.day}
+          className="flex min-w-0 flex-1 flex-col items-center gap-2"
+        >
           <div
             className="w-full rounded-t-md bg-brand-forest"
             style={{
@@ -1058,19 +1072,117 @@ function InsightBox({
 }) {
   return (
     <div
-      className={`rounded-md border border-brand-forest/15 bg-brand-ivory px-3 py-3 text-sm text-brand-olive ${className}`}
+      className={`overflow-hidden rounded-md border border-brand-forest/15 bg-brand-ivory px-3 py-3 text-sm text-brand-olive ${className}`}
     >
-      <p className="font-semibold text-brand-charcoal">{insight.title}</p>
-      <p className={`${compact ? "mt-1" : "mt-2"} leading-6`}>{insight.body}</p>
+      <p className="wrap-break-word font-semibold text-brand-charcoal">
+        {insight.title}
+      </p>
+      <p
+        className={`${compact ? "mt-1" : "mt-2"} break-words leading-6 [overflow-wrap:anywhere]`}
+      >
+        {insight.body}
+      </p>
       <ul className="mt-2 space-y-1.5 leading-5">
         {insight.bullets.map((bullet) => (
           <li key={bullet} className="flex gap-2">
             <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-forest" />
-            <span>{bullet}</span>
+            <span className="[overflow-wrap:anywhere]">{bullet}</span>
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function InfoPopover({
+  insight,
+  compact = false,
+  label = "Show metric meaning",
+}: {
+  insight: Insight;
+  compact?: boolean;
+  label?: string;
+}) {
+  return (
+    <span className="group/tooltip relative inline-flex">
+      <button
+        type="button"
+        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-brand-forest outline-none transition hover:bg-brand-ivory focus-visible:ring-2 focus-visible:ring-brand-forest/30"
+        aria-label={label}
+      >
+        <Info className="h-4 w-4" />
+      </button>
+      <span className="invisible absolute right-0 top-8 z-40 block w-[min(22rem,calc(100vw-2rem))] opacity-0 transition group-hover/tooltip:visible group-hover/tooltip:opacity-100 group-focus-within/tooltip:visible group-focus-within/tooltip:opacity-100">
+        <InsightBox
+          insight={insight}
+          compact={compact}
+          className="max-h-80 overflow-auto shadow-lg"
+        />
+      </span>
+    </span>
+  );
+}
+
+function DetailPopover({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="group/tooltip relative inline-flex">
+      <button
+        type="button"
+        className="inline-flex items-center gap-2 rounded-full border border-brand-olive/25 bg-white px-3 py-1 text-xs font-semibold text-brand-charcoal outline-none transition hover:border-brand-forest focus-visible:ring-2 focus-visible:ring-brand-forest/30"
+        aria-label={label}
+      >
+        Info
+        <Info className="h-3.5 w-3.5 text-brand-forest" />
+      </button>
+      <span className="invisible absolute right-0 top-9 z-40 block w-[min(44rem,calc(100vw-2rem))] opacity-0 transition group-hover/tooltip:visible group-hover/tooltip:opacity-100 group-focus-within/tooltip:visible group-focus-within/tooltip:opacity-100">
+        {children}
+      </span>
+    </span>
+  );
+}
+
+function MetricPopover({
+  kind,
+  item,
+}: {
+  kind: MetricInsightKind;
+  item: Metric;
+}) {
+  const insight = getMetricInsight(kind);
+
+  return (
+    <span className="group/tooltip relative inline-flex">
+      <button
+        type="button"
+        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-brand-forest outline-none transition hover:bg-brand-ivory focus-visible:ring-2 focus-visible:ring-brand-forest/30"
+        aria-label={`Show details for ${item.label}`}
+      >
+        <Info className="h-4 w-4" />
+      </button>
+      <span className="invisible absolute right-0 top-8 z-40 block w-[min(24rem,calc(100vw-2rem))] opacity-0 transition group-hover/tooltip:visible group-hover/tooltip:opacity-100 group-focus-within/tooltip:visible group-focus-within/tooltip:opacity-100">
+        <div className="max-h-96 overflow-auto rounded-md border border-brand-forest/15 bg-brand-ivory px-3 py-3 text-sm text-brand-olive shadow-lg">
+          <div className="rounded-md bg-white px-3 py-2">
+            <span className="block text-[0.65rem] font-semibold uppercase tracking-wide text-brand-olive">
+              Tracked value
+            </span>
+            <span className="mt-1 block  text-brand-charcoal [overflow-wrap:anywhere]">
+              {item.label}
+            </span>
+          </div>
+          <InsightBox
+            insight={insight}
+            className="mt-3 border-0 bg-transparent p-0 shadow-none"
+            compact
+          />
+        </div>
+      </span>
+    </span>
   );
 }
 
@@ -1119,7 +1231,10 @@ function PaginationControls({
   const canGoForward = page < totalPages;
 
   return (
-    <nav className="flex items-center gap-2" aria-label="Recent traffic pagination">
+    <nav
+      className="flex items-center gap-2"
+      aria-label="Recent traffic pagination"
+    >
       <button
         type="button"
         onClick={() => onPageChange(Math.max(1, page - 1))}
@@ -1152,7 +1267,6 @@ function MetricList({
   items: Metric[];
   kind: MetricInsightKind;
 }) {
-  const [expandedLabel, setExpandedLabel] = useState<string | null>(null);
   const highest = maxViews(items);
 
   if (items.length === 0) {
@@ -1162,40 +1276,25 @@ function MetricList({
   return (
     <div className="space-y-4">
       {items.map((item) => (
-        <div key={item.label}>
-          <button
-            type="button"
-            onClick={() =>
-              setExpandedLabel((current) =>
-                current === item.label ? null : item.label,
-              )
-            }
-            className="flex w-full items-center justify-between gap-3 text-left text-sm"
-            aria-expanded={expandedLabel === item.label}
-          >
-            <span className="min-w-0 truncate text-brand-charcoal">{item.label}</span>
+        <div key={item.label} className="relative">
+          <div className="flex w-full items-center justify-between gap-3 text-sm">
+            <span
+              className="min-w-0 truncate text-brand-charcoal"
+              title={item.label}
+            >
+              {item.label}
+            </span>
             <span className="flex shrink-0 items-center gap-2 font-semibold">
               {formatNumber(item.views)}
-              <ChevronDown
-                className={`h-4 w-4 text-brand-forest transition ${
-                  expandedLabel === item.label ? "rotate-180" : ""
-                }`}
-              />
+              <MetricPopover kind={kind} item={item} />
             </span>
-          </button>
+          </div>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-brand-olive/15">
             <div
               className="h-full rounded-full bg-brand-forest"
               style={{ width: `${Math.max(4, (item.views / highest) * 100)}%` }}
             />
           </div>
-          {expandedLabel === item.label ? (
-            <InsightBox
-              insight={getMetricInsight(kind, item)}
-              className="mt-3"
-              compact
-            />
-          ) : null}
         </div>
       ))}
     </div>
@@ -1203,8 +1302,6 @@ function MetricList({
 }
 
 function RecentVisitsTable({ visits }: { visits: Visit[] }) {
-  const [expandedVisitId, setExpandedVisitId] = useState<string | null>(null);
-
   if (visits.length === 0) {
     return <EmptyState message="No matching recent visits." />;
   }
@@ -1212,136 +1309,111 @@ function RecentVisitsTable({ visits }: { visits: Visit[] }) {
   return (
     <>
       <div className="space-y-3 md:hidden">
-        {visits.map((visit) => {
-          const isOpen = expandedVisitId === visit.id;
+        {visits.map((visit) => (
+          <article
+            key={visit.id}
+            className="relative rounded-md border border-brand-olive/20 bg-white p-4"
+          >
+            <div className="flex w-full items-start justify-between gap-3">
+              <span className="min-w-0">
+                <span className="block text-xs text-brand-olive">
+                  {formatDateTime(visit.createdAt)}
+                </span>
+                <span className="mt-2 block truncate font-semibold text-brand-charcoal">
+                  {visit.path}
+                </span>
+                <span className="mt-1 block truncate text-xs text-brand-olive">
+                  {visit.deviceType} / {visit.browser}
+                </span>
+              </span>
+              <span className="shrink-0 rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
+                {visit.event}
+              </span>
+            </div>
 
-          return (
-            <article
-              key={visit.id}
-              className="rounded-md border border-brand-olive/20 bg-white p-4"
-            >
-              <button
-                type="button"
-                onClick={() =>
-                  setExpandedVisitId((current) =>
-                    current === visit.id ? null : visit.id,
-                  )
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-brand-olive">
+              <DetailPill
+                label="Visitor"
+                value={visit.visitorId?.slice(0, 8) ?? "unknown"}
+              />
+              <DetailPill label="IP" value={visit.ipAddress ?? "-"} />
+              <DetailPill label="Campaign" value={getCampaignLabel(visit)} />
+              <DetailPill
+                label="Engagement"
+                value={
+                  visit.durationMs ? formatDuration(visit.durationMs) : "-"
                 }
-                className="flex w-full items-start justify-between gap-3 text-left"
-                aria-expanded={isOpen}
-              >
-                <span className="min-w-0">
-                  <span className="block text-xs text-brand-olive">
-                    {formatDateTime(visit.createdAt)}
-                  </span>
-                  <span className="mt-2 block truncate font-semibold text-brand-charcoal">
-                    {visit.path}
-                  </span>
-                  <span className="mt-1 block truncate text-xs text-brand-olive">
-                    {visit.deviceType} / {visit.browser}
-                  </span>
-                </span>
-                <span className="shrink-0 rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
-                  {visit.event}
-                </span>
-              </button>
+              />
+            </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-brand-olive">
-                <DetailPill label="Visitor" value={visit.visitorId?.slice(0, 8) ?? "unknown"} />
-                <DetailPill label="IP" value={visit.ipAddress ?? "-"} />
-                <DetailPill label="Campaign" value={getCampaignLabel(visit)} />
-                <DetailPill
-                  label="Engagement"
-                  value={
-                    visit.durationMs ? formatDuration(visit.durationMs) : "-"
-                  }
-                />
-              </div>
-
-              {isOpen ? <VisitDetail visit={visit} /> : null}
-            </article>
-          );
-        })}
+            <div className="mt-3 flex justify-end">
+              <DetailPopover label={`Show details for ${visit.path}`}>
+                <VisitDetail visit={visit} />
+              </DetailPopover>
+            </div>
+          </article>
+        ))}
       </div>
 
       <div className="hidden overflow-x-auto md:block">
         <table className="w-full min-w-[980px] border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b border-brand-olive/20 text-xs uppercase tracking-[0.16em] text-brand-olive">
-            <th className="py-3 pr-4 font-semibold">Time</th>
-            <th className="py-3 pr-4 font-semibold">Event</th>
-            <th className="py-3 pr-4 font-semibold">Path</th>
-            <th className="py-3 pr-4 font-semibold">Visitor</th>
-            <th className="py-3 pr-4 font-semibold">IP</th>
-            <th className="py-3 pr-4 font-semibold">Device</th>
-            <th className="py-3 pr-4 font-semibold">Engagement</th>
-            <th className="py-3 pr-4 font-semibold">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {visits.map((visit) => {
-            const isOpen = expandedVisitId === visit.id;
-
-            return (
-              <Fragment key={visit.id}>
-                <tr className="border-b border-brand-olive/10">
-                  <td className="py-4 pr-4 text-brand-olive">
-                    {formatDateTime(visit.createdAt)}
-                  </td>
-                  <td className="py-4 pr-4">
-                    <span className="rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
-                      {visit.event}
+          <thead>
+            <tr className="border-b border-brand-olive/20 text-xs uppercase tracking-[0.16em] text-brand-olive">
+              <th className="py-3 pr-4 font-semibold">Time</th>
+              <th className="py-3 pr-4 font-semibold">Event</th>
+              <th className="py-3 pr-4 font-semibold">Path</th>
+              <th className="py-3 pr-4 font-semibold">Visitor</th>
+              <th className="py-3 pr-4 font-semibold">IP</th>
+              <th className="py-3 pr-4 font-semibold">Device</th>
+              <th className="py-3 pr-4 font-semibold">Engagement</th>
+              <th className="py-3 pr-4 font-semibold">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visits.map((visit) => (
+              <tr key={visit.id} className="border-b border-brand-olive/10">
+                <td className="py-4 pr-4 text-brand-olive">
+                  {formatDateTime(visit.createdAt)}
+                </td>
+                <td className="py-4 pr-4">
+                  <span className="rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
+                    {visit.event}
+                  </span>
+                </td>
+                <td className="max-w-xs py-4 pr-4">
+                  <p className="truncate font-semibold">{visit.path}</p>
+                  <p className="truncate text-xs text-brand-olive">
+                    {visit.title}
+                  </p>
+                </td>
+                <td className="py-4 pr-4 text-xs text-brand-olive">
+                  {visit.visitorId?.slice(0, 8) ?? "unknown"}
+                </td>
+                <td className="py-4 pr-4 text-brand-olive">
+                  {visit.ipAddress ?? "-"}
+                </td>
+                <td className="py-4 pr-4 text-brand-olive">
+                  {visit.deviceType} / {visit.browser}
+                  <span className="block text-xs">
+                    {visit.viewport ?? visit.screen}
+                  </span>
+                </td>
+                <td className="py-4 pr-4 text-brand-olive">
+                  {visit.durationMs ? formatDuration(visit.durationMs) : "-"}
+                  {typeof visit.maxScrollDepth === "number" ? (
+                    <span className="block text-xs">
+                      {visit.maxScrollDepth}% scroll
                     </span>
-                  </td>
-                  <td className="max-w-xs py-4 pr-4">
-                    <p className="truncate font-semibold">{visit.path}</p>
-                    <p className="truncate text-xs text-brand-olive">{visit.title}</p>
-                  </td>
-                  <td className="py-4 pr-4 text-xs text-brand-olive">
-                    {visit.visitorId?.slice(0, 8) ?? "unknown"}
-                  </td>
-                  <td className="py-4 pr-4 text-brand-olive">{visit.ipAddress ?? "-"}</td>
-                  <td className="py-4 pr-4 text-brand-olive">
-                    {visit.deviceType} / {visit.browser}
-                    <span className="block text-xs">{visit.viewport ?? visit.screen}</span>
-                  </td>
-                  <td className="py-4 pr-4 text-brand-olive">
-                    {visit.durationMs ? formatDuration(visit.durationMs) : "-"}
-                    {typeof visit.maxScrollDepth === "number" ? (
-                      <span className="block text-xs">{visit.maxScrollDepth}% scroll</span>
-                    ) : null}
-                  </td>
-                  <td className="py-4 pr-4">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setExpandedVisitId((current) =>
-                          current === visit.id ? null : visit.id,
-                        )
-                      }
-                      className="inline-flex items-center gap-2 rounded-full border border-brand-olive/25 px-3 py-1 text-xs font-semibold text-brand-charcoal transition hover:border-brand-forest"
-                      aria-expanded={isOpen}
-                    >
-                      Info
-                      <ChevronDown
-                        className={`h-3.5 w-3.5 text-brand-forest transition ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                  </td>
-                </tr>
-                {isOpen ? (
-                  <tr className="border-b border-brand-olive/10">
-                    <td colSpan={8} className="bg-brand-ivory/50 px-4 py-4">
-                      <VisitDetail visit={visit} />
-                    </td>
-                  </tr>
-                ) : null}
-              </Fragment>
-            );
-          })}
-        </tbody>
+                  ) : null}
+                </td>
+                <td className="py-4 pr-4">
+                  <DetailPopover label={`Show details for ${visit.path}`}>
+                    <VisitDetail visit={visit} />
+                  </DetailPopover>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </>
@@ -1363,14 +1435,23 @@ function VisitDetail({ visit }: { visit: Visit }) {
   return (
     <div className="mt-4 rounded-md border border-brand-forest/15 bg-brand-ivory px-4 py-4 text-sm text-brand-olive md:mt-0">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <DetailPill label="Referrer" value={visit.referrer || "Direct / unknown"} />
+        <DetailPill
+          label="Referrer"
+          value={visit.referrer || "Direct / unknown"}
+        />
         <DetailPill label="Campaign" value={getCampaignLabel(visit)} />
         <DetailPill label="Source" value={visit.utmSource || "-"} />
         <DetailPill label="Medium" value={visit.utmMedium || "-"} />
         <DetailPill label="Timezone" value={visit.timezone || "-"} />
         <DetailPill label="Language" value={visit.language || "-"} />
-        <DetailPill label="Session" value={visit.sessionId?.slice(0, 12) || "-"} />
-        <DetailPill label="Viewport" value={visit.viewport || visit.screen || "-"} />
+        <DetailPill
+          label="Session"
+          value={visit.sessionId?.slice(0, 12) || "-"}
+        />
+        <DetailPill
+          label="Viewport"
+          value={visit.viewport || visit.screen || "-"}
+        />
       </div>
 
       <div className="mt-4 grid gap-3 lg:grid-cols-2">
@@ -1393,7 +1474,9 @@ function VisitDetail({ visit }: { visit: Visit }) {
             body: "Engagement is strongest when time on page and scroll depth are both meaningful for booking, contact, or package pages.",
             bullets: [
               `Time tracked: ${
-                visit.durationMs ? formatDuration(visit.durationMs) : "not recorded"
+                visit.durationMs
+                  ? formatDuration(visit.durationMs)
+                  : "not recorded"
               }.`,
               `Max scroll: ${
                 typeof visit.maxScrollDepth === "number"
