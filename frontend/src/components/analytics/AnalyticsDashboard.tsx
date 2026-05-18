@@ -3,9 +3,14 @@
 import {
   Activity,
   BarChart3,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   Eye,
+  Filter,
   Globe2,
+  Info,
   KeyRound,
   MousePointerClick,
   RefreshCcw,
@@ -15,7 +20,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, Fragment, useEffect, useMemo, useState } from "react";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
 const tokenStorageKey = "annebeala.analytics.adminToken";
@@ -80,6 +85,27 @@ type AnalyticsSummary = {
   recentVisits: Visit[];
 };
 
+type TrafficFilters = {
+  query: string;
+  event: "all" | Visit["event"];
+  device: string;
+  campaign: string;
+};
+
+type Insight = {
+  title: string;
+  body: string;
+  bullets: string[];
+};
+
+type MetricInsightKind =
+  | "pages"
+  | "referrers"
+  | "campaigns"
+  | "devices"
+  | "browsers"
+  | "timezones";
+
 type TrackerDebug = {
   status: string;
   detail?: string;
@@ -138,6 +164,158 @@ const formatDuration = (value: number) => {
 const maxViews = (items: Array<{ views: number }>) =>
   Math.max(1, ...items.map((item) => item.views));
 
+const trafficPageSizes = [5, 10, 20];
+
+const initialTrafficFilters: TrafficFilters = {
+  query: "",
+  event: "all",
+  device: "all",
+  campaign: "all",
+};
+
+const getCampaignLabel = (visit: Visit) =>
+  visit.utmCampaign || visit.utmSource || "No campaign";
+
+const getUniqueOptions = (values: string[]) =>
+  Array.from(new Set(values.filter(Boolean))).sort((a, b) =>
+    a.localeCompare(b),
+  );
+
+const getMetricInsight = (kind: MetricInsightKind, item: Metric): Insight => {
+  const shared = {
+    pages: {
+      title: "Page detail",
+      body: "This shows which site path received traffic. Paths with tracking query strings usually came from ads, social links, or tagged campaigns.",
+      bullets: [
+        "High page views show where visitors are landing most often.",
+        "Compare booking and contact pages against the home page to judge booking intent.",
+        "Long URLs with query strings can be campaign clicks and may need cleaner UTM links.",
+      ],
+    },
+    referrers: {
+      title: "Referrer detail",
+      body: "A referrer is the previous website or app that sent the visitor here. Direct / unknown means the browser did not share that source.",
+      bullets: [
+        "Google, TikTok, Instagram, and partner links help identify useful traffic sources.",
+        "Direct / unknown can include typed URLs, bookmarks, WhatsApp, Instagram app traffic, or privacy-blocked referrers.",
+        "Use tagged UTM links when sharing campaigns so important traffic does not fall into unknown.",
+      ],
+    },
+    campaigns: {
+      title: "Campaign detail",
+      body: "Campaigns come from UTM tracking on links. They help separate Instagram, ads, WhatsApp, Google Business Profile, and other promotions.",
+      bullets: [
+        "No campaign means the visit did not include a campaign label.",
+        "Use utm_source, utm_medium, and utm_campaign on every promotional link.",
+        "A named campaign with good booking/contact traffic is a strong signal to repeat or increase that channel.",
+      ],
+    },
+    devices: {
+      title: "Device detail",
+      body: "Device counts show whether visitors browse from phones, desktops, or tablets.",
+      bullets: [
+        "Mobile-heavy traffic means booking, contact, and location actions should be easy with one thumb.",
+        "Desktop traffic often needs more scannable package and pricing detail.",
+        "Unexpected device patterns can reveal bot traffic or tracking gaps.",
+      ],
+    },
+    browsers: {
+      title: "Browser detail",
+      body: "Browser counts help spot rendering and compatibility priorities.",
+      bullets: [
+        "Prioritize testing the browsers that carry the most traffic.",
+        "Unknown browsers can be privacy tools, bots, or incomplete user-agent data.",
+        "Compare browser mix with device mix before making design assumptions.",
+      ],
+    },
+    timezones: {
+      title: "Timezone detail",
+      body: "Timezones estimate where visitors are browsing from based on the browser setting.",
+      bullets: [
+        "Africa/Lagos should be expected for local customers.",
+        "Foreign timezones can be tourists, diaspora customers, bots, or remote admins.",
+        "Use this to time posts and campaigns around the audience that is actually visiting.",
+      ],
+    },
+  } satisfies Record<MetricInsightKind, Insight>;
+
+  const insight = shared[kind];
+
+  return {
+    ...insight,
+    title: `${insight.title}: ${item.label}`,
+  };
+};
+
+const metricExplanations = {
+  totalViews: {
+    title: "Page views",
+    body: "Every page_view event is counted here, including repeat visits from the same person.",
+    bullets: [
+      "Use this to understand total traffic volume.",
+      "Compare it with unique visitors to see whether people return or view multiple pages.",
+    ],
+  },
+  uniqueVisitors: {
+    title: "Unique visitors",
+    body: "This estimates distinct visitors using the tracker visitor ID stored in the browser.",
+    bullets: [
+      "It is not a perfect people count because browsers, cleared storage, and privacy settings can change IDs.",
+      "It is still useful for judging reach compared with total page views.",
+    ],
+  },
+  sessions: {
+    title: "Sessions",
+    body: "A session groups visits from the same browser over a short browsing period.",
+    bullets: [
+      "A visitor can create more than one session over time.",
+      "Sessions are useful for reading traffic bursts from campaigns or posts.",
+    ],
+  },
+  avgEngagement: {
+    title: "Average engagement",
+    body: "Average engagement is the average tracked time visitors spend actively on the site before the engagement event is sent.",
+    bullets: [
+      "Very low values can mean visitors leave quickly or the tracker has not received enough engagement events yet.",
+      "Read this beside average scroll depth. Good engagement with low scroll can mean the top screen answers the visitor's need.",
+      "Good engagement on booking and contact pages is a stronger signal than engagement on low-intent pages.",
+    ],
+  },
+  intentViews: {
+    title: "Intent views",
+    body: "Intent views are visits to booking and contact pages, which are stronger business signals than general browsing.",
+    bullets: [
+      "A rising count means more visitors are reaching action pages.",
+      "Use this with campaigns and referrers to find which source sends people ready to book.",
+    ],
+  },
+  intentRate: {
+    title: "Intent rate",
+    body: "Intent rate is booking/contact views divided by total page views.",
+    bullets: [
+      "A low rate means visitors may be reading but not moving toward booking or contact.",
+      "Improve it by placing booking prompts earlier on high-traffic pages.",
+    ],
+  },
+  avgScroll: {
+    title: "Average scroll",
+    body: "Average scroll is the average maximum page depth visitors reached before the tracker sent engagement data.",
+    bullets: [
+      "Low scroll can mean key content is too low, the first screen is enough, or visitors are leaving early.",
+      "Pair it with average engagement before changing layout.",
+      "If campaign traffic has low scroll and low engagement, the landing message may not match the ad or post.",
+    ],
+  },
+  events: {
+    title: "Events",
+    body: "Events include page views and engagement events sent by the site tracker.",
+    bullets: [
+      "This can be higher than page views because one visit may send more than one event type.",
+      "Use events to confirm the tracker is active and collecting more than simple page loads.",
+    ],
+  },
+} satisfies Record<string, Insight>;
+
 export default function AnalyticsDashboard() {
   const [token, setToken] = useState("");
   const [draftToken, setDraftToken] = useState("");
@@ -148,31 +326,101 @@ export default function AnalyticsDashboard() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [trackerDebug, setTrackerDebug] = useState<TrackerDebug | null>(null);
-  const [query, setQuery] = useState("");
+  const [trafficFilters, setTrafficFilters] =
+    useState<TrafficFilters>(initialTrafficFilters);
+  const [trafficPage, setTrafficPage] = useState(1);
+  const [trafficPageSize, setTrafficPageSize] = useState(10);
 
   const filteredVisits = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+    const normalizedQuery = trafficFilters.query.trim().toLowerCase();
 
-    if (!normalizedQuery) {
-      return summary.recentVisits;
+    return summary.recentVisits.filter((visit) => {
+      const campaign = getCampaignLabel(visit);
+      const matchesSearch =
+        !normalizedQuery ||
+        [
+          visit.id,
+          visit.visitorId,
+          visit.sessionId,
+          visit.path,
+          visit.title,
+          visit.ipAddress,
+          visit.browser,
+          visit.operatingSystem,
+          visit.deviceType,
+          visit.referrer,
+          visit.utmSource,
+          visit.utmMedium,
+          visit.utmCampaign,
+          campaign,
+          visit.timezone,
+        ]
+          .filter(Boolean)
+          .some((value) =>
+            String(value).toLowerCase().includes(normalizedQuery),
+          );
+
+      return (
+        matchesSearch &&
+        (trafficFilters.event === "all" || visit.event === trafficFilters.event) &&
+        (trafficFilters.device === "all" ||
+          visit.deviceType === trafficFilters.device) &&
+        (trafficFilters.campaign === "all" ||
+          campaign === trafficFilters.campaign)
+      );
+    });
+  }, [trafficFilters, summary.recentVisits]);
+
+  const trafficFilterOptions = useMemo(
+    () => ({
+      devices: getUniqueOptions(summary.recentVisits.map((visit) => visit.deviceType)),
+      campaigns: getUniqueOptions(summary.recentVisits.map(getCampaignLabel)),
+    }),
+    [summary.recentVisits],
+  );
+
+  const totalTrafficPages = Math.max(
+    1,
+    Math.ceil(filteredVisits.length / trafficPageSize),
+  );
+  const currentTrafficPage = Math.min(trafficPage, totalTrafficPages);
+  const paginatedVisits = filteredVisits.slice(
+    (currentTrafficPage - 1) * trafficPageSize,
+    currentTrafficPage * trafficPageSize,
+  );
+  const trafficStart =
+    filteredVisits.length === 0
+      ? 0
+      : (currentTrafficPage - 1) * trafficPageSize + 1;
+  const trafficEnd = Math.min(
+    currentTrafficPage * trafficPageSize,
+    filteredVisits.length,
+  );
+
+  useEffect(() => {
+    setTrafficPage(1);
+  }, [trafficFilters, trafficPageSize, summary.recentVisits]);
+
+  useEffect(() => {
+    if (trafficPage > totalTrafficPages) {
+      setTrafficPage(totalTrafficPages);
     }
+  }, [trafficPage, totalTrafficPages]);
 
-    return summary.recentVisits.filter((visit) =>
-      [
-        visit.path,
-        visit.title,
-        visit.ipAddress,
-        visit.browser,
-        visit.operatingSystem,
-        visit.deviceType,
-        visit.referrer,
-        visit.utmCampaign,
-        visit.timezone,
-      ]
-        .filter(Boolean)
-        .some((value) => String(value).toLowerCase().includes(normalizedQuery)),
-    );
-  }, [query, summary.recentVisits]);
+  const updateTrafficFilter = <Key extends keyof TrafficFilters>(
+    key: Key,
+    value: TrafficFilters[Key],
+  ) => {
+    setTrafficFilters((current) => ({
+      ...current,
+      [key]: value,
+    }));
+  };
+
+  const resetTrafficFilters = () => {
+    setTrafficFilters(initialTrafficFilters);
+    setTrafficPage(1);
+  };
 
   const conversionSignals = useMemo(() => {
     const bookingViews = summary.topPages.find((page) =>
@@ -483,21 +731,29 @@ export default function AnalyticsDashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard icon={Eye} label="Page views" value={formatNumber(summary.totalViews)} />
+        <StatCard
+          icon={Eye}
+          label="Page views"
+          value={formatNumber(summary.totalViews)}
+          insight={metricExplanations.totalViews}
+        />
         <StatCard
           icon={Users}
           label="Unique visitors"
           value={formatNumber(summary.uniqueVisitors)}
+          insight={metricExplanations.uniqueVisitors}
         />
         <StatCard
           icon={Activity}
           label="Sessions"
           value={formatNumber(summary.sessions)}
+          insight={metricExplanations.sessions}
         />
         <StatCard
           icon={Clock3}
           label="Avg engagement"
           value={formatDuration(summary.avgDurationMs)}
+          insight={metricExplanations.avgEngagement}
         />
       </div>
 
@@ -507,11 +763,27 @@ export default function AnalyticsDashboard() {
         </Panel>
         <Panel title="Operator Notes" icon={TrendingUp}>
           <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <MiniMetric label="Intent views" value={formatNumber(conversionSignals.usefulViews)} />
-              <MiniMetric label="Intent rate" value={`${conversionSignals.rate}%`} />
-              <MiniMetric label="Avg scroll" value={`${summary.avgScrollDepth || 0}%`} />
-              <MiniMetric label="Events" value={formatNumber(summary.totalEvents)} />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <MiniMetric
+                label="Intent views"
+                value={formatNumber(conversionSignals.usefulViews)}
+                insight={metricExplanations.intentViews}
+              />
+              <MiniMetric
+                label="Intent rate"
+                value={`${conversionSignals.rate}%`}
+                insight={metricExplanations.intentRate}
+              />
+              <MiniMetric
+                label="Avg scroll"
+                value={`${summary.avgScrollDepth || 0}%`}
+                insight={metricExplanations.avgScroll}
+              />
+              <MiniMetric
+                label="Events"
+                value={formatNumber(summary.totalEvents)}
+                insight={metricExplanations.events}
+              />
             </div>
             <ul className="space-y-2 text-sm leading-6 text-brand-olive">
               {recommendations.map((note) => (
@@ -526,39 +798,124 @@ export default function AnalyticsDashboard() {
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
         <Panel title="Top Pages" icon={MousePointerClick}>
-          <MetricList items={summary.topPages} />
+          <MetricList items={summary.topPages} kind="pages" />
         </Panel>
         <Panel title="Referrers" icon={Globe2}>
-          <MetricList items={summary.referrers} />
+          <MetricList items={summary.referrers} kind="referrers" />
         </Panel>
         <Panel title="Campaigns" icon={TrendingUp}>
-          <MetricList items={summary.campaigns} />
+          <MetricList items={summary.campaigns} kind="campaigns" />
         </Panel>
       </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
         <Panel title="Devices" icon={Smartphone}>
-          <MetricList items={summary.devices} />
+          <MetricList items={summary.devices} kind="devices" />
         </Panel>
         <Panel title="Browsers" icon={Search}>
-          <MetricList items={summary.browsers} />
+          <MetricList items={summary.browsers} kind="browsers" />
         </Panel>
         <Panel title="Timezones" icon={Globe2}>
-          <MetricList items={summary.timezones} />
+          <MetricList items={summary.timezones} kind="timezones" />
         </Panel>
       </div>
 
       <Panel title="Recent Traffic" icon={Activity} className="mt-6">
-        <div className="mb-4 flex items-center gap-2 rounded-md border border-brand-olive/25 bg-brand-ivory px-3 py-2">
-          <Search className="h-4 w-4 text-brand-olive" />
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search path, IP, browser, device, campaign"
-            className="w-full bg-transparent text-sm outline-none"
+        <form
+          onSubmit={(event) => event.preventDefault()}
+          className="mb-4 grid gap-3 rounded-md border border-brand-olive/20 bg-brand-ivory p-3 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))_auto] lg:items-end"
+        >
+          <label className="block">
+            <span className="mb-1 flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand-olive">
+              <Search className="h-3.5 w-3.5" />
+              Search
+            </span>
+            <input
+              value={trafficFilters.query}
+              onChange={(event) => updateTrafficFilter("query", event.target.value)}
+              placeholder="Path, IP, browser, campaign"
+              className="w-full rounded-md border border-brand-olive/25 bg-white px-3 py-2 text-sm outline-none transition focus:border-brand-forest focus:ring-2 focus:ring-brand-forest/15"
+            />
+          </label>
+
+          <FilterSelect
+            label="Event"
+            value={trafficFilters.event}
+            onChange={(value) =>
+              updateTrafficFilter("event", value as TrafficFilters["event"])
+            }
+            options={[
+              { value: "all", label: "All events" },
+              { value: "page_view", label: "Page views" },
+              { value: "engagement", label: "Engagement" },
+            ]}
+          />
+
+          <FilterSelect
+            label="Device"
+            value={trafficFilters.device}
+            onChange={(value) => updateTrafficFilter("device", value)}
+            options={[
+              { value: "all", label: "All devices" },
+              ...trafficFilterOptions.devices.map((device) => ({
+                value: device,
+                label: device,
+              })),
+            ]}
+          />
+
+          <FilterSelect
+            label="Campaign"
+            value={trafficFilters.campaign}
+            onChange={(value) => updateTrafficFilter("campaign", value)}
+            options={[
+              { value: "all", label: "All campaigns" },
+              ...trafficFilterOptions.campaigns.map((campaign) => ({
+                value: campaign,
+                label: campaign,
+              })),
+            ]}
+          />
+
+          <FilterSelect
+            label="Per page"
+            value={String(trafficPageSize)}
+            onChange={(value) => setTrafficPageSize(Number(value))}
+            options={trafficPageSizes.map((size) => ({
+              value: String(size),
+              label: `${size} rows`,
+            }))}
+          />
+
+          <button
+            type="button"
+            onClick={resetTrafficFilters}
+            className="inline-flex items-center justify-center rounded-md border border-brand-olive/30 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-wide text-brand-charcoal transition hover:border-brand-forest"
+          >
+            Reset
+          </button>
+        </form>
+
+        <div className="mb-4 flex flex-col gap-2 text-sm text-brand-olive sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            Showing {trafficStart}-{trafficEnd} of {formatNumber(filteredVisits.length)} visits
+          </p>
+          <PaginationControls
+            page={currentTrafficPage}
+            totalPages={totalTrafficPages}
+            onPageChange={setTrafficPage}
           />
         </div>
-        <RecentVisitsTable visits={filteredVisits} />
+
+        <RecentVisitsTable visits={paginatedVisits} />
+
+        <div className="mt-4 flex justify-end">
+          <PaginationControls
+            page={currentTrafficPage}
+            totalPages={totalTrafficPages}
+            onPageChange={setTrafficPage}
+          />
+        </div>
       </Panel>
     </section>
   );
@@ -568,22 +925,35 @@ function StatCard({
   icon: Icon,
   label,
   value,
+  insight,
 }: {
   icon: typeof Eye;
   label: string;
   value: string;
+  insight: Insight;
 }) {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="rounded-lg border border-brand-olive/25 bg-white p-5 shadow-sm">
-      <div className="flex items-center justify-between gap-3">
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className="flex w-full items-center justify-between gap-3 text-left"
+        aria-expanded={open}
+      >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-olive">
           {label}
         </p>
-        <Icon className="h-5 w-5 text-brand-forest" />
-      </div>
+        <span className="flex items-center gap-2 text-brand-forest">
+          <Info className="h-4 w-4" />
+          <Icon className="h-5 w-5" />
+        </span>
+      </button>
       <p className="mt-4 text-3xl font-semibold tracking-normal text-brand-charcoal">
         {value}
       </p>
+      {open ? <InsightBox insight={insight} className="mt-4" /> : null}
     </div>
   );
 }
@@ -612,13 +982,36 @@ function Panel({
   );
 }
 
-function MiniMetric({ label, value }: { label: string; value: string }) {
+function MiniMetric({
+  label,
+  value,
+  insight,
+}: {
+  label: string;
+  value: string;
+  insight: Insight;
+}) {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="rounded-md border border-brand-olive/20 bg-white px-3 py-3">
-      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand-olive">
-        {label}
-      </p>
-      <p className="mt-1 text-xl font-semibold tracking-normal">{value}</p>
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className="flex w-full items-start justify-between gap-2 text-left"
+        aria-expanded={open}
+      >
+        <span>
+          <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand-olive">
+            {label}
+          </span>
+          <span className="mt-1 block text-xl font-semibold tracking-normal">
+            {value}
+          </span>
+        </span>
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand-forest" />
+      </button>
+      {open ? <InsightBox insight={insight} className="mt-3" compact /> : null}
     </div>
   );
 }
@@ -654,7 +1047,112 @@ function DailyChart({ days }: { days: DailyMetric[] }) {
   );
 }
 
-function MetricList({ items }: { items: Metric[] }) {
+function InsightBox({
+  insight,
+  className = "",
+  compact = false,
+}: {
+  insight: Insight;
+  className?: string;
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-md border border-brand-forest/15 bg-brand-ivory px-3 py-3 text-sm text-brand-olive ${className}`}
+    >
+      <p className="font-semibold text-brand-charcoal">{insight.title}</p>
+      <p className={`${compact ? "mt-1" : "mt-2"} leading-6`}>{insight.body}</p>
+      <ul className="mt-2 space-y-1.5 leading-5">
+        {insight.bullets.map((bullet) => (
+          <li key={bullet} className="flex gap-2">
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-forest" />
+            <span>{bullet}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function FilterSelect({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: Array<{ value: string; label: string }>;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1 flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand-olive">
+        <Filter className="h-3.5 w-3.5" />
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="w-full rounded-md border border-brand-olive/25 bg-white px-3 py-2 text-sm text-brand-charcoal outline-none transition focus:border-brand-forest focus:ring-2 focus:ring-brand-forest/15"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function PaginationControls({
+  page,
+  totalPages,
+  onPageChange,
+}: {
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}) {
+  const canGoBack = page > 1;
+  const canGoForward = page < totalPages;
+
+  return (
+    <nav className="flex items-center gap-2" aria-label="Recent traffic pagination">
+      <button
+        type="button"
+        onClick={() => onPageChange(Math.max(1, page - 1))}
+        disabled={!canGoBack}
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-brand-olive/25 bg-white text-brand-charcoal transition hover:border-brand-forest disabled:cursor-not-allowed disabled:opacity-45"
+        aria-label="Previous page"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      <span className="min-w-24 text-center text-xs font-semibold uppercase tracking-wide text-brand-olive">
+        Page {page} of {totalPages}
+      </span>
+      <button
+        type="button"
+        onClick={() => onPageChange(Math.min(totalPages, page + 1))}
+        disabled={!canGoForward}
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-brand-olive/25 bg-white text-brand-charcoal transition hover:border-brand-forest disabled:cursor-not-allowed disabled:opacity-45"
+        aria-label="Next page"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </nav>
+  );
+}
+
+function MetricList({
+  items,
+  kind,
+}: {
+  items: Metric[];
+  kind: MetricInsightKind;
+}) {
+  const [expandedLabel, setExpandedLabel] = useState<string | null>(null);
   const highest = maxViews(items);
 
   if (items.length === 0) {
@@ -665,16 +1163,39 @@ function MetricList({ items }: { items: Metric[] }) {
     <div className="space-y-4">
       {items.map((item) => (
         <div key={item.label}>
-          <div className="flex items-center justify-between gap-3 text-sm">
+          <button
+            type="button"
+            onClick={() =>
+              setExpandedLabel((current) =>
+                current === item.label ? null : item.label,
+              )
+            }
+            className="flex w-full items-center justify-between gap-3 text-left text-sm"
+            aria-expanded={expandedLabel === item.label}
+          >
             <span className="min-w-0 truncate text-brand-charcoal">{item.label}</span>
-            <span className="font-semibold">{formatNumber(item.views)}</span>
-          </div>
+            <span className="flex shrink-0 items-center gap-2 font-semibold">
+              {formatNumber(item.views)}
+              <ChevronDown
+                className={`h-4 w-4 text-brand-forest transition ${
+                  expandedLabel === item.label ? "rotate-180" : ""
+                }`}
+              />
+            </span>
+          </button>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-brand-olive/15">
             <div
               className="h-full rounded-full bg-brand-forest"
               style={{ width: `${Math.max(4, (item.views / highest) * 100)}%` }}
             />
           </div>
+          {expandedLabel === item.label ? (
+            <InsightBox
+              insight={getMetricInsight(kind, item)}
+              className="mt-3"
+              compact
+            />
+          ) : null}
         </div>
       ))}
     </div>
@@ -682,13 +1203,69 @@ function MetricList({ items }: { items: Metric[] }) {
 }
 
 function RecentVisitsTable({ visits }: { visits: Visit[] }) {
+  const [expandedVisitId, setExpandedVisitId] = useState<string | null>(null);
+
   if (visits.length === 0) {
     return <EmptyState message="No matching recent visits." />;
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[980px] border-collapse text-left text-sm">
+    <>
+      <div className="space-y-3 md:hidden">
+        {visits.map((visit) => {
+          const isOpen = expandedVisitId === visit.id;
+
+          return (
+            <article
+              key={visit.id}
+              className="rounded-md border border-brand-olive/20 bg-white p-4"
+            >
+              <button
+                type="button"
+                onClick={() =>
+                  setExpandedVisitId((current) =>
+                    current === visit.id ? null : visit.id,
+                  )
+                }
+                className="flex w-full items-start justify-between gap-3 text-left"
+                aria-expanded={isOpen}
+              >
+                <span className="min-w-0">
+                  <span className="block text-xs text-brand-olive">
+                    {formatDateTime(visit.createdAt)}
+                  </span>
+                  <span className="mt-2 block truncate font-semibold text-brand-charcoal">
+                    {visit.path}
+                  </span>
+                  <span className="mt-1 block truncate text-xs text-brand-olive">
+                    {visit.deviceType} / {visit.browser}
+                  </span>
+                </span>
+                <span className="shrink-0 rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
+                  {visit.event}
+                </span>
+              </button>
+
+              <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-brand-olive">
+                <DetailPill label="Visitor" value={visit.visitorId?.slice(0, 8) ?? "unknown"} />
+                <DetailPill label="IP" value={visit.ipAddress ?? "-"} />
+                <DetailPill label="Campaign" value={getCampaignLabel(visit)} />
+                <DetailPill
+                  label="Engagement"
+                  value={
+                    visit.durationMs ? formatDuration(visit.durationMs) : "-"
+                  }
+                />
+              </div>
+
+              {isOpen ? <VisitDetail visit={visit} /> : null}
+            </article>
+          );
+        })}
+      </div>
+
+      <div className="hidden overflow-x-auto md:block">
+        <table className="w-full min-w-[980px] border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-brand-olive/20 text-xs uppercase tracking-[0.16em] text-brand-olive">
             <th className="py-3 pr-4 font-semibold">Time</th>
@@ -698,41 +1275,136 @@ function RecentVisitsTable({ visits }: { visits: Visit[] }) {
             <th className="py-3 pr-4 font-semibold">IP</th>
             <th className="py-3 pr-4 font-semibold">Device</th>
             <th className="py-3 pr-4 font-semibold">Engagement</th>
+            <th className="py-3 pr-4 font-semibold">Details</th>
           </tr>
         </thead>
         <tbody>
-          {visits.map((visit) => (
-            <tr key={visit.id} className="border-b border-brand-olive/10">
-              <td className="py-4 pr-4 text-brand-olive">
-                {formatDateTime(visit.createdAt)}
-              </td>
-              <td className="py-4 pr-4">
-                <span className="rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
-                  {visit.event}
-                </span>
-              </td>
-              <td className="max-w-xs py-4 pr-4">
-                <p className="truncate font-semibold">{visit.path}</p>
-                <p className="truncate text-xs text-brand-olive">{visit.title}</p>
-              </td>
-              <td className="py-4 pr-4 text-xs text-brand-olive">
-                {visit.visitorId?.slice(0, 8) ?? "unknown"}
-              </td>
-              <td className="py-4 pr-4 text-brand-olive">{visit.ipAddress ?? "-"}</td>
-              <td className="py-4 pr-4 text-brand-olive">
-                {visit.deviceType} / {visit.browser}
-                <span className="block text-xs">{visit.viewport ?? visit.screen}</span>
-              </td>
-              <td className="py-4 pr-4 text-brand-olive">
-                {visit.durationMs ? formatDuration(visit.durationMs) : "-"}
-                {typeof visit.maxScrollDepth === "number" ? (
-                  <span className="block text-xs">{visit.maxScrollDepth}% scroll</span>
+          {visits.map((visit) => {
+            const isOpen = expandedVisitId === visit.id;
+
+            return (
+              <Fragment key={visit.id}>
+                <tr className="border-b border-brand-olive/10">
+                  <td className="py-4 pr-4 text-brand-olive">
+                    {formatDateTime(visit.createdAt)}
+                  </td>
+                  <td className="py-4 pr-4">
+                    <span className="rounded-full bg-brand-ivory px-3 py-1 text-xs font-semibold text-brand-charcoal">
+                      {visit.event}
+                    </span>
+                  </td>
+                  <td className="max-w-xs py-4 pr-4">
+                    <p className="truncate font-semibold">{visit.path}</p>
+                    <p className="truncate text-xs text-brand-olive">{visit.title}</p>
+                  </td>
+                  <td className="py-4 pr-4 text-xs text-brand-olive">
+                    {visit.visitorId?.slice(0, 8) ?? "unknown"}
+                  </td>
+                  <td className="py-4 pr-4 text-brand-olive">{visit.ipAddress ?? "-"}</td>
+                  <td className="py-4 pr-4 text-brand-olive">
+                    {visit.deviceType} / {visit.browser}
+                    <span className="block text-xs">{visit.viewport ?? visit.screen}</span>
+                  </td>
+                  <td className="py-4 pr-4 text-brand-olive">
+                    {visit.durationMs ? formatDuration(visit.durationMs) : "-"}
+                    {typeof visit.maxScrollDepth === "number" ? (
+                      <span className="block text-xs">{visit.maxScrollDepth}% scroll</span>
+                    ) : null}
+                  </td>
+                  <td className="py-4 pr-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedVisitId((current) =>
+                          current === visit.id ? null : visit.id,
+                        )
+                      }
+                      className="inline-flex items-center gap-2 rounded-full border border-brand-olive/25 px-3 py-1 text-xs font-semibold text-brand-charcoal transition hover:border-brand-forest"
+                      aria-expanded={isOpen}
+                    >
+                      Info
+                      <ChevronDown
+                        className={`h-3.5 w-3.5 text-brand-forest transition ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  </td>
+                </tr>
+                {isOpen ? (
+                  <tr className="border-b border-brand-olive/10">
+                    <td colSpan={8} className="bg-brand-ivory/50 px-4 py-4">
+                      <VisitDetail visit={visit} />
+                    </td>
+                  </tr>
                 ) : null}
-              </td>
-            </tr>
-          ))}
+              </Fragment>
+            );
+          })}
         </tbody>
-      </table>
+        </table>
+      </div>
+    </>
+  );
+}
+
+function DetailPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-md bg-brand-ivory px-3 py-2">
+      <span className="block font-semibold uppercase tracking-wide text-brand-olive">
+        {label}
+      </span>
+      <span className="mt-1 block truncate text-brand-charcoal">{value}</span>
+    </div>
+  );
+}
+
+function VisitDetail({ visit }: { visit: Visit }) {
+  return (
+    <div className="mt-4 rounded-md border border-brand-forest/15 bg-brand-ivory px-4 py-4 text-sm text-brand-olive md:mt-0">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <DetailPill label="Referrer" value={visit.referrer || "Direct / unknown"} />
+        <DetailPill label="Campaign" value={getCampaignLabel(visit)} />
+        <DetailPill label="Source" value={visit.utmSource || "-"} />
+        <DetailPill label="Medium" value={visit.utmMedium || "-"} />
+        <DetailPill label="Timezone" value={visit.timezone || "-"} />
+        <DetailPill label="Language" value={visit.language || "-"} />
+        <DetailPill label="Session" value={visit.sessionId?.slice(0, 12) || "-"} />
+        <DetailPill label="Viewport" value={visit.viewport || visit.screen || "-"} />
+      </div>
+
+      <div className="mt-4 grid gap-3 lg:grid-cols-2">
+        <InsightBox
+          compact
+          insight={{
+            title: "How to read this visit",
+            body: "This row combines the page event, source labels, browser details, and engagement data for one tracked visit.",
+            bullets: [
+              "Referrer explains where the visitor likely came from before reaching the site.",
+              "Campaign, source, and medium are only useful when the shared link includes UTM tags.",
+              "Engagement time and max scroll show whether the visitor stayed and how far they moved down the page.",
+            ],
+          }}
+        />
+        <InsightBox
+          compact
+          insight={{
+            title: "Engagement detail",
+            body: "Engagement is strongest when time on page and scroll depth are both meaningful for booking, contact, or package pages.",
+            bullets: [
+              `Time tracked: ${
+                visit.durationMs ? formatDuration(visit.durationMs) : "not recorded"
+              }.`,
+              `Max scroll: ${
+                typeof visit.maxScrollDepth === "number"
+                  ? `${visit.maxScrollDepth}%`
+                  : "not recorded"
+              }.`,
+              "Missing values usually mean the visitor left before the engagement event fired or the event was a simple page view.",
+            ],
+          }}
+        />
+      </div>
     </div>
   );
 }
