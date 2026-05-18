@@ -69,6 +69,8 @@ type VisitRow = {
   created_at: string;
 };
 
+const minimumUsefulEngagementMs = 1000;
+
 @Injectable()
 export class AnalyticsService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(AnalyticsService.name);
@@ -286,6 +288,16 @@ export class AnalyticsService implements OnModuleInit, OnModuleDestroy {
       recent,
     ] = await Promise.all([
       this.pool.query<SummaryRow>(`
+        with latest_engagement as (
+          select distinct on (${sessionKey}, path)
+            duration_ms,
+            max_scroll_depth
+          from analytics_visits
+          where event = 'engagement'
+            and duration_ms is not null
+            and duration_ms >= ${minimumUsefulEngagementMs}
+          order by ${sessionKey}, path, created_at desc
+        )
         select
           count(*) as total_events,
           count(*) filter (where event = 'page_view') as total_views,
@@ -293,8 +305,8 @@ export class AnalyticsService implements OnModuleInit, OnModuleDestroy {
           count(distinct ${sessionKey}) as sessions,
           min(created_at) as first_seen,
           max(created_at) as last_seen,
-          avg(duration_ms) filter (where event = 'engagement' and duration_ms is not null) as avg_duration_ms,
-          avg(max_scroll_depth) filter (where event = 'engagement' and max_scroll_depth is not null) as avg_scroll_depth
+          (select avg(duration_ms) from latest_engagement) as avg_duration_ms,
+          (select avg(max_scroll_depth) from latest_engagement where max_scroll_depth is not null) as avg_scroll_depth
         from analytics_visits
       `),
       this.pool.query<DailyRow>(`
@@ -451,7 +463,7 @@ export class AnalyticsService implements OnModuleInit, OnModuleDestroy {
       },
       {},
     );
-    const engagement = this.visits.filter((visit) => visit.event === 'engagement');
+    const engagement = this.latestUsefulEngagementVisits();
     const avgDurationMs = this.average(engagement.map((visit) => visit.durationMs));
     const avgScrollDepth = this.average(
       engagement.map((visit) => visit.maxScrollDepth),
@@ -517,6 +529,28 @@ export class AnalyticsService implements OnModuleInit, OnModuleDestroy {
       deviceType: row.device_type ?? 'Unknown',
       createdAt: row.created_at,
     };
+  }
+
+  private latestUsefulEngagementVisits() {
+    const latestByPageSession = new Map<string, Visit>();
+
+    for (const visit of this.visits) {
+      if (
+        visit.event !== 'engagement' ||
+        !Number.isFinite(visit.durationMs) ||
+        (visit.durationMs ?? 0) < minimumUsefulEngagementMs
+      ) {
+        continue;
+      }
+
+      const key = `${visit.sessionId ?? visit.visitorId ?? visit.id}|${visit.path}`;
+
+      if (!latestByPageSession.has(key)) {
+        latestByPageSession.set(key, visit);
+      }
+    }
+
+    return Array.from(latestByPageSession.values());
   }
 
   private parseUserAgent(userAgent: string | null) {
