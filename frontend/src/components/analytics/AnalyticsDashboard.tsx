@@ -1077,16 +1077,14 @@ function InsightBox({
       <p className="wrap-break-word font-semibold text-brand-charcoal">
         {insight.title}
       </p>
-      <p
-        className={`${compact ? "mt-1" : "mt-2"} break-words leading-6 [overflow-wrap:anywhere]`}
-      >
+      <p className={`${compact ? "mt-1" : "mt-2"} wrap-break-word leading-6`}>
         {insight.body}
       </p>
       <ul className="mt-2 space-y-1.5 leading-5">
         {insight.bullets.map((bullet) => (
           <li key={bullet} className="flex gap-2">
             <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-forest" />
-            <span className="[overflow-wrap:anywhere]">{bullet}</span>
+            <span className="wrap-anywhere">{bullet}</span>
           </li>
         ))}
       </ul>
@@ -1171,7 +1169,7 @@ function MetricPopover({
             <span className="block text-[0.65rem] font-semibold uppercase tracking-wide text-brand-olive">
               Tracked value
             </span>
-            <span className="mt-1 block  text-brand-charcoal [overflow-wrap:anywhere]">
+            <span className="mt-1 block  text-brand-charcoal wrap-anywhere">
               {item.label}
             </span>
           </div>
@@ -1356,7 +1354,7 @@ function RecentVisitsTable({ visits }: { visits: Visit[] }) {
       </div>
 
       <div className="hidden overflow-x-auto md:block">
-        <table className="w-full min-w-[980px] border-collapse text-left text-sm">
+        <table className="w-full min-w-245 border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-brand-olive/20 text-xs uppercase tracking-[0.16em] text-brand-olive">
               <th className="py-3 pr-4 font-semibold">Time</th>
